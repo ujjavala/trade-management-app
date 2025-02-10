@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 using TradeManagementApp.Models;
 
@@ -6,7 +6,7 @@ using TradeManagementApp.Models;
 
 namespace TradeManagementApp.Persistence.Migrations
 {
-    public partial class SeedData : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

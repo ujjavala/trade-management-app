@@ -34,20 +34,6 @@ namespace TradeManagementApp.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Accounts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            FirstName = "John",
-                            LastName = "Doe"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            FirstName = "Jane",
-                            LastName = "Smith"
-                        });
                 });
 
             modelBuilder.Entity("TradeManagementApp.Models.Trade", b =>
@@ -59,8 +45,11 @@ namespace TradeManagementApp.Persistence.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("AccountId1")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("Amount")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("BuyOrSell")
                         .IsRequired()
@@ -68,11 +57,11 @@ namespace TradeManagementApp.Persistence.Migrations
 
                     b.Property<string>("SecurityCode")
                         .IsRequired()
+                        .HasMaxLength(3)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("TEXT");
@@ -81,40 +70,22 @@ namespace TradeManagementApp.Persistence.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("Trades");
+                    b.HasIndex("AccountId1");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AccountId = 1,
-                            Amount = 100m,
-                            BuyOrSell = "Buy",
-                            SecurityCode = "AAPL",
-                            Status = "Completed",
-                            Timestamp = new DateTime(2025, 2, 10, 12, 46, 11, 574, DateTimeKind.Local).AddTicks(1360)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AccountId = 2,
-                            Amount = 200m,
-                            BuyOrSell = "Sell",
-                            SecurityCode = "GOOGL",
-                            Status = "Completed",
-                            Timestamp = new DateTime(2025, 2, 10, 12, 46, 11, 574, DateTimeKind.Local).AddTicks(1390)
-                        });
+                    b.ToTable("Trades");
                 });
 
             modelBuilder.Entity("TradeManagementApp.Models.Trade", b =>
                 {
-                    b.HasOne("TradeManagementApp.Models.Account", "Account")
-                        .WithMany("Trades")
+                    b.HasOne("TradeManagementApp.Models.Account", null)
+                        .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Account");
+                    b.HasOne("TradeManagementApp.Models.Account", null)
+                        .WithMany("Trades")
+                        .HasForeignKey("AccountId1");
                 });
 
             modelBuilder.Entity("TradeManagementApp.Models.Account", b =>
