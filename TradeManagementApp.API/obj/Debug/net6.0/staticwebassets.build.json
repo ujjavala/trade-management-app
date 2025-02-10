@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "RlKkLQ3tUwJ8HF3my+zSniVMTL9XhUe9CVskJH5vAMY=",
+  "Source": "TradeManagementApp.API",
+  "BasePath": "_content/TradeManagementApp.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
