@@ -1,0 +1,17 @@
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/bin/Debug/net6.0/TradeManagementApp.Persistence.deps.json
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/bin/Debug/net6.0/TradeManagementApp.Persistence.runtimeconfig.json
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/bin/Debug/net6.0/TradeManagementApp.Persistence.dll
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/bin/Debug/net6.0/ref/TradeManagementApp.Persistence.dll
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/bin/Debug/net6.0/TradeManagementApp.Persistence.pdb
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/bin/Debug/net6.0/TradeManagementApp.Models.dll
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/bin/Debug/net6.0/TradeManagementApp.Models.pdb
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/obj/Debug/net6.0/TradeManagementApp.Persistence.csproj.AssemblyReference.cache
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/obj/Debug/net6.0/TradeManagementApp.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/obj/Debug/net6.0/TradeManagementApp.Persistence.AssemblyInfoInputs.cache
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/obj/Debug/net6.0/TradeManagementApp.Persistence.AssemblyInfo.cs
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/obj/Debug/net6.0/TradeManagementApp.Persistence.csproj.CoreCompileInputs.cache
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/obj/Debug/net6.0/TradeManagementApp.Persistence.csproj.CopyComplete
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/obj/Debug/net6.0/TradeManagementApp.Persistence.dll
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/obj/Debug/net6.0/ref/TradeManagementApp.Persistence.dll
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/obj/Debug/net6.0/TradeManagementApp.Persistence.pdb
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/obj/Debug/net6.0/TradeManagementApp.Persistence.genruntimeconfig.cache

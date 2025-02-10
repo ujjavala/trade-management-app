@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TradeManagementApp.Models;
+using System;
 
 namespace TradeManagementApp.Persistence
 {
@@ -29,10 +30,36 @@ namespace TradeManagementApp.Persistence
                 .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Trade>()
-                .HasOne<Account>()
-                .WithMany()
+                .HasOne(t => t.Account)
+                .WithMany(a => a.Trades)
                 .HasForeignKey(t => t.AccountId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Seed data for Accounts
+            for (int i = 1; i <= 50; i++)
+            {
+                modelBuilder.Entity<Account>().HasData(new Account
+                {
+                    Id = i,
+                    FirstName = $"FirstName{i}",
+                    LastName = $"LastName{i}"
+                });
+            }
+
+            // Seed data for Trades
+            for (int i = 1; i <= 50; i++)
+            {
+                modelBuilder.Entity<Trade>().HasData(new Trade
+                {
+                    Id = i,
+                    AccountId = i,
+                    Amount = i * 10m,
+                    BuyOrSell = i % 2 == 0 ? "Buy" : "Sell",
+                    SecurityCode = $"{i:D3}",
+                    Status = TradeStatus.Placed,
+                    Timestamp = DateTime.UtcNow.AddMinutes(i)
+                });
+            }
         }
     }
 }

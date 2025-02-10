@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
 
 namespace TradeManagementApp.Models
 {
@@ -26,5 +28,9 @@ namespace TradeManagementApp.Models
 
         [Required]
         public TradeStatus Status { get; set; }
+
+        // Navigation property
+         [JsonIgnore]
+        public Account Account { get; set; }
     }
 }

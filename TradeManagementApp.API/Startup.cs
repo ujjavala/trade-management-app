@@ -8,6 +8,8 @@ using Microsoft.OpenApi.Models;
 using TradeManagementApp.API.Services;
 using TradeManagementApp.Persistence;
 using TradeManagementApp.Persistence.Repositories;
+using System.Text.Json.Serialization;
+
 
 namespace TradeManagementApp.API
 {
@@ -22,7 +24,11 @@ namespace TradeManagementApp.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            });
 
             // Use in-memory database for testing
             if (Configuration.GetValue<bool>("UseInMemoryDatabase"))
@@ -33,7 +39,7 @@ namespace TradeManagementApp.API
             else
             {
                 services.AddDbContext<DataContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                  options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             }
 
             services.AddScoped<ITradeRepository, TradeRepository>();

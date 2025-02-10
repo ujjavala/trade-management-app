@@ -1,0 +1,12 @@
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/bin/Debug/net6.0/TradeManagementApp.Models.deps.json
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/bin/Debug/net6.0/TradeManagementApp.Models.dll
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/bin/Debug/net6.0/ref/TradeManagementApp.Models.dll
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/bin/Debug/net6.0/TradeManagementApp.Models.pdb
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/obj/Debug/net6.0/TradeManagementApp.Models.csproj.AssemblyReference.cache
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/obj/Debug/net6.0/TradeManagementApp.Models.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/obj/Debug/net6.0/TradeManagementApp.Models.AssemblyInfoInputs.cache
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/obj/Debug/net6.0/TradeManagementApp.Models.AssemblyInfo.cs
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/obj/Debug/net6.0/TradeManagementApp.Models.csproj.CoreCompileInputs.cache
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/obj/Debug/net6.0/TradeManagementApp.Models.dll
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/obj/Debug/net6.0/ref/TradeManagementApp.Models.dll
+/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Models/obj/Debug/net6.0/TradeManagementApp.Models.pdb

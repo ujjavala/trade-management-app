@@ -34,6 +34,308 @@ namespace TradeManagementApp.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Accounts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FirstName = "FirstName1",
+                            LastName = "LastName1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            FirstName = "FirstName2",
+                            LastName = "LastName2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            FirstName = "FirstName3",
+                            LastName = "LastName3"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            FirstName = "FirstName4",
+                            LastName = "LastName4"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            FirstName = "FirstName5",
+                            LastName = "LastName5"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            FirstName = "FirstName6",
+                            LastName = "LastName6"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            FirstName = "FirstName7",
+                            LastName = "LastName7"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            FirstName = "FirstName8",
+                            LastName = "LastName8"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            FirstName = "FirstName9",
+                            LastName = "LastName9"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            FirstName = "FirstName10",
+                            LastName = "LastName10"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            FirstName = "FirstName11",
+                            LastName = "LastName11"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            FirstName = "FirstName12",
+                            LastName = "LastName12"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            FirstName = "FirstName13",
+                            LastName = "LastName13"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            FirstName = "FirstName14",
+                            LastName = "LastName14"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            FirstName = "FirstName15",
+                            LastName = "LastName15"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            FirstName = "FirstName16",
+                            LastName = "LastName16"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            FirstName = "FirstName17",
+                            LastName = "LastName17"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            FirstName = "FirstName18",
+                            LastName = "LastName18"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            FirstName = "FirstName19",
+                            LastName = "LastName19"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            FirstName = "FirstName20",
+                            LastName = "LastName20"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            FirstName = "FirstName21",
+                            LastName = "LastName21"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            FirstName = "FirstName22",
+                            LastName = "LastName22"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            FirstName = "FirstName23",
+                            LastName = "LastName23"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            FirstName = "FirstName24",
+                            LastName = "LastName24"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            FirstName = "FirstName25",
+                            LastName = "LastName25"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            FirstName = "FirstName26",
+                            LastName = "LastName26"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            FirstName = "FirstName27",
+                            LastName = "LastName27"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            FirstName = "FirstName28",
+                            LastName = "LastName28"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            FirstName = "FirstName29",
+                            LastName = "LastName29"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            FirstName = "FirstName30",
+                            LastName = "LastName30"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            FirstName = "FirstName31",
+                            LastName = "LastName31"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            FirstName = "FirstName32",
+                            LastName = "LastName32"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            FirstName = "FirstName33",
+                            LastName = "LastName33"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            FirstName = "FirstName34",
+                            LastName = "LastName34"
+                        },
+                        new
+                        {
+                            Id = 35,
+                            FirstName = "FirstName35",
+                            LastName = "LastName35"
+                        },
+                        new
+                        {
+                            Id = 36,
+                            FirstName = "FirstName36",
+                            LastName = "LastName36"
+                        },
+                        new
+                        {
+                            Id = 37,
+                            FirstName = "FirstName37",
+                            LastName = "LastName37"
+                        },
+                        new
+                        {
+                            Id = 38,
+                            FirstName = "FirstName38",
+                            LastName = "LastName38"
+                        },
+                        new
+                        {
+                            Id = 39,
+                            FirstName = "FirstName39",
+                            LastName = "LastName39"
+                        },
+                        new
+                        {
+                            Id = 40,
+                            FirstName = "FirstName40",
+                            LastName = "LastName40"
+                        },
+                        new
+                        {
+                            Id = 41,
+                            FirstName = "FirstName41",
+                            LastName = "LastName41"
+                        },
+                        new
+                        {
+                            Id = 42,
+                            FirstName = "FirstName42",
+                            LastName = "LastName42"
+                        },
+                        new
+                        {
+                            Id = 43,
+                            FirstName = "FirstName43",
+                            LastName = "LastName43"
+                        },
+                        new
+                        {
+                            Id = 44,
+                            FirstName = "FirstName44",
+                            LastName = "LastName44"
+                        },
+                        new
+                        {
+                            Id = 45,
+                            FirstName = "FirstName45",
+                            LastName = "LastName45"
+                        },
+                        new
+                        {
+                            Id = 46,
+                            FirstName = "FirstName46",
+                            LastName = "LastName46"
+                        },
+                        new
+                        {
+                            Id = 47,
+                            FirstName = "FirstName47",
+                            LastName = "LastName47"
+                        },
+                        new
+                        {
+                            Id = 48,
+                            FirstName = "FirstName48",
+                            LastName = "LastName48"
+                        },
+                        new
+                        {
+                            Id = 49,
+                            FirstName = "FirstName49",
+                            LastName = "LastName49"
+                        },
+                        new
+                        {
+                            Id = 50,
+                            FirstName = "FirstName50",
+                            LastName = "LastName50"
+                        });
                 });
 
             modelBuilder.Entity("TradeManagementApp.Models.Trade", b =>
@@ -43,9 +345,6 @@ namespace TradeManagementApp.Persistence.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("AccountId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("AccountId1")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Amount")
@@ -70,22 +369,520 @@ namespace TradeManagementApp.Persistence.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("AccountId1");
-
                     b.ToTable("Trades");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccountId = 1,
+                            Amount = 10m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "001",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 29, 24, 479, DateTimeKind.Utc).AddTicks(9400)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccountId = 2,
+                            Amount = 20m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "002",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 30, 24, 479, DateTimeKind.Utc).AddTicks(9410)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AccountId = 3,
+                            Amount = 30m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "003",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 31, 24, 479, DateTimeKind.Utc).AddTicks(9420)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AccountId = 4,
+                            Amount = 40m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "004",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 32, 24, 479, DateTimeKind.Utc).AddTicks(9420)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AccountId = 5,
+                            Amount = 50m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "005",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 33, 24, 479, DateTimeKind.Utc).AddTicks(9420)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AccountId = 6,
+                            Amount = 60m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "006",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 34, 24, 479, DateTimeKind.Utc).AddTicks(9430)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AccountId = 7,
+                            Amount = 70m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "007",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 35, 24, 479, DateTimeKind.Utc).AddTicks(9430)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AccountId = 8,
+                            Amount = 80m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "008",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 36, 24, 479, DateTimeKind.Utc).AddTicks(9440)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AccountId = 9,
+                            Amount = 90m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "009",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 37, 24, 479, DateTimeKind.Utc).AddTicks(9440)
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AccountId = 10,
+                            Amount = 100m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "010",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 38, 24, 479, DateTimeKind.Utc).AddTicks(9450)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AccountId = 11,
+                            Amount = 110m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "011",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 39, 24, 479, DateTimeKind.Utc).AddTicks(9450)
+                        },
+                        new
+                        {
+                            Id = 12,
+                            AccountId = 12,
+                            Amount = 120m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "012",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 40, 24, 479, DateTimeKind.Utc).AddTicks(9460)
+                        },
+                        new
+                        {
+                            Id = 13,
+                            AccountId = 13,
+                            Amount = 130m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "013",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 41, 24, 479, DateTimeKind.Utc).AddTicks(9460)
+                        },
+                        new
+                        {
+                            Id = 14,
+                            AccountId = 14,
+                            Amount = 140m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "014",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 42, 24, 479, DateTimeKind.Utc).AddTicks(9460)
+                        },
+                        new
+                        {
+                            Id = 15,
+                            AccountId = 15,
+                            Amount = 150m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "015",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 43, 24, 479, DateTimeKind.Utc).AddTicks(9470)
+                        },
+                        new
+                        {
+                            Id = 16,
+                            AccountId = 16,
+                            Amount = 160m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "016",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 44, 24, 479, DateTimeKind.Utc).AddTicks(9470)
+                        },
+                        new
+                        {
+                            Id = 17,
+                            AccountId = 17,
+                            Amount = 170m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "017",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 45, 24, 479, DateTimeKind.Utc).AddTicks(9500)
+                        },
+                        new
+                        {
+                            Id = 18,
+                            AccountId = 18,
+                            Amount = 180m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "018",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 46, 24, 479, DateTimeKind.Utc).AddTicks(9500)
+                        },
+                        new
+                        {
+                            Id = 19,
+                            AccountId = 19,
+                            Amount = 190m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "019",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 47, 24, 479, DateTimeKind.Utc).AddTicks(9500)
+                        },
+                        new
+                        {
+                            Id = 20,
+                            AccountId = 20,
+                            Amount = 200m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "020",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 48, 24, 479, DateTimeKind.Utc).AddTicks(9510)
+                        },
+                        new
+                        {
+                            Id = 21,
+                            AccountId = 21,
+                            Amount = 210m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "021",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 49, 24, 479, DateTimeKind.Utc).AddTicks(9510)
+                        },
+                        new
+                        {
+                            Id = 22,
+                            AccountId = 22,
+                            Amount = 220m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "022",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 50, 24, 479, DateTimeKind.Utc).AddTicks(9510)
+                        },
+                        new
+                        {
+                            Id = 23,
+                            AccountId = 23,
+                            Amount = 230m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "023",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 51, 24, 479, DateTimeKind.Utc).AddTicks(9520)
+                        },
+                        new
+                        {
+                            Id = 24,
+                            AccountId = 24,
+                            Amount = 240m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "024",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 52, 24, 479, DateTimeKind.Utc).AddTicks(9520)
+                        },
+                        new
+                        {
+                            Id = 25,
+                            AccountId = 25,
+                            Amount = 250m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "025",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 53, 24, 479, DateTimeKind.Utc).AddTicks(9520)
+                        },
+                        new
+                        {
+                            Id = 26,
+                            AccountId = 26,
+                            Amount = 260m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "026",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 54, 24, 479, DateTimeKind.Utc).AddTicks(9530)
+                        },
+                        new
+                        {
+                            Id = 27,
+                            AccountId = 27,
+                            Amount = 270m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "027",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 55, 24, 479, DateTimeKind.Utc).AddTicks(9530)
+                        },
+                        new
+                        {
+                            Id = 28,
+                            AccountId = 28,
+                            Amount = 280m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "028",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 56, 24, 479, DateTimeKind.Utc).AddTicks(9530)
+                        },
+                        new
+                        {
+                            Id = 29,
+                            AccountId = 29,
+                            Amount = 290m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "029",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 57, 24, 479, DateTimeKind.Utc).AddTicks(9540)
+                        },
+                        new
+                        {
+                            Id = 30,
+                            AccountId = 30,
+                            Amount = 300m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "030",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 58, 24, 479, DateTimeKind.Utc).AddTicks(9540)
+                        },
+                        new
+                        {
+                            Id = 31,
+                            AccountId = 31,
+                            Amount = 310m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "031",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 12, 59, 24, 479, DateTimeKind.Utc).AddTicks(9540)
+                        },
+                        new
+                        {
+                            Id = 32,
+                            AccountId = 32,
+                            Amount = 320m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "032",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 0, 24, 479, DateTimeKind.Utc).AddTicks(9550)
+                        },
+                        new
+                        {
+                            Id = 33,
+                            AccountId = 33,
+                            Amount = 330m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "033",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 1, 24, 479, DateTimeKind.Utc).AddTicks(9550)
+                        },
+                        new
+                        {
+                            Id = 34,
+                            AccountId = 34,
+                            Amount = 340m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "034",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 2, 24, 479, DateTimeKind.Utc).AddTicks(9550)
+                        },
+                        new
+                        {
+                            Id = 35,
+                            AccountId = 35,
+                            Amount = 350m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "035",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 3, 24, 479, DateTimeKind.Utc).AddTicks(9560)
+                        },
+                        new
+                        {
+                            Id = 36,
+                            AccountId = 36,
+                            Amount = 360m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "036",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 4, 24, 479, DateTimeKind.Utc).AddTicks(9560)
+                        },
+                        new
+                        {
+                            Id = 37,
+                            AccountId = 37,
+                            Amount = 370m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "037",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 5, 24, 479, DateTimeKind.Utc).AddTicks(9560)
+                        },
+                        new
+                        {
+                            Id = 38,
+                            AccountId = 38,
+                            Amount = 380m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "038",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 6, 24, 479, DateTimeKind.Utc).AddTicks(9570)
+                        },
+                        new
+                        {
+                            Id = 39,
+                            AccountId = 39,
+                            Amount = 390m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "039",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 7, 24, 479, DateTimeKind.Utc).AddTicks(9570)
+                        },
+                        new
+                        {
+                            Id = 40,
+                            AccountId = 40,
+                            Amount = 400m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "040",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 8, 24, 479, DateTimeKind.Utc).AddTicks(9570)
+                        },
+                        new
+                        {
+                            Id = 41,
+                            AccountId = 41,
+                            Amount = 410m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "041",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 9, 24, 479, DateTimeKind.Utc).AddTicks(9580)
+                        },
+                        new
+                        {
+                            Id = 42,
+                            AccountId = 42,
+                            Amount = 420m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "042",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 10, 24, 479, DateTimeKind.Utc).AddTicks(9580)
+                        },
+                        new
+                        {
+                            Id = 43,
+                            AccountId = 43,
+                            Amount = 430m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "043",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 11, 24, 479, DateTimeKind.Utc).AddTicks(9580)
+                        },
+                        new
+                        {
+                            Id = 44,
+                            AccountId = 44,
+                            Amount = 440m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "044",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 12, 24, 479, DateTimeKind.Utc).AddTicks(9590)
+                        },
+                        new
+                        {
+                            Id = 45,
+                            AccountId = 45,
+                            Amount = 450m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "045",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 13, 24, 479, DateTimeKind.Utc).AddTicks(9590)
+                        },
+                        new
+                        {
+                            Id = 46,
+                            AccountId = 46,
+                            Amount = 460m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "046",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 14, 24, 479, DateTimeKind.Utc).AddTicks(9590)
+                        },
+                        new
+                        {
+                            Id = 47,
+                            AccountId = 47,
+                            Amount = 470m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "047",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 15, 24, 479, DateTimeKind.Utc).AddTicks(9600)
+                        },
+                        new
+                        {
+                            Id = 48,
+                            AccountId = 48,
+                            Amount = 480m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "048",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 16, 24, 479, DateTimeKind.Utc).AddTicks(9600)
+                        },
+                        new
+                        {
+                            Id = 49,
+                            AccountId = 49,
+                            Amount = 490m,
+                            BuyOrSell = "Sell",
+                            SecurityCode = "049",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 17, 24, 479, DateTimeKind.Utc).AddTicks(9600)
+                        },
+                        new
+                        {
+                            Id = 50,
+                            AccountId = 50,
+                            Amount = 500m,
+                            BuyOrSell = "Buy",
+                            SecurityCode = "050",
+                            Status = 0,
+                            Timestamp = new DateTime(2025, 2, 10, 13, 18, 24, 479, DateTimeKind.Utc).AddTicks(9610)
+                        });
                 });
 
             modelBuilder.Entity("TradeManagementApp.Models.Trade", b =>
                 {
-                    b.HasOne("TradeManagementApp.Models.Account", null)
-                        .WithMany()
+                    b.HasOne("TradeManagementApp.Models.Account", "Account")
+                        .WithMany("Trades")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TradeManagementApp.Models.Account", null)
-                        .WithMany("Trades")
-                        .HasForeignKey("AccountId1");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("TradeManagementApp.Models.Account", b =>

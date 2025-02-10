@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
 
 namespace TradeManagementApp.Models
 {
@@ -13,6 +15,7 @@ namespace TradeManagementApp.Models
         [Required]
         public string LastName { get; set; }
 
+        [JsonIgnore]
         public ICollection<Trade> Trades { get; set; }
     }
 }
