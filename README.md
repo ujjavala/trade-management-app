@@ -49,7 +49,7 @@ Run the application using the following command:
 Run the unit tests using the following command:
 ```dotnet test```
 
-By default, the application will run on http://localhost:5000 and https://localhost:5001.
+By default, the application will run on http://localhost:5294
 
 ### Endpoints
 The API provides the following endpoints:
