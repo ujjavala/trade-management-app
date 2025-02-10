@@ -1,5 +1,43 @@
-
 # TradeManagementApp
+
+## TL;DR
+
+1. **Clone the Repository**:
+    ```sh
+    git clone https://github.com/ujjavala/trade-management-app
+    cd TradeManagementApp
+    ```
+
+2. **Ensure All Projects Target .NET 6.0**:
+    Make sure all your project files (.csproj) are targeting net6.0.
+
+3. **Clean and Restore the Solution**:
+    ```sh
+    dotnet clean
+    dotnet restore
+    ```
+
+4. **Build the Solution**:
+    ```sh
+    dotnet build
+    ```
+
+5. **Setup SQLite Database**:
+    ```sh
+    cd TradeManagementApp/TradeManagementApp.API
+    dotnet ef migrations add InitialCreate --project ../TradeManagementApp.Persistence/TradeManagementApp.Persistence.csproj
+    dotnet ef database update --project ../TradeManagementApp.Persistence/TradeManagementApp.Persistence.csproj
+    ```
+
+6. **Run the Application**:
+    ```sh
+    dotnet run --project TradeManagementApp.API
+    ```
+
+7. **Run the Unit Tests**:
+    ```sh
+    dotnet test
+    ```
 
 ## Overview
 
@@ -19,7 +57,7 @@ TradeManagementApp is a sample application designed to manage trades and account
 ### Step 1: Clone the Repository
 
 ```sh
-git clone <repository-url>
+git clone https://github.com/ujjavala/trade-management-app
 cd TradeManagementApp
 ```
 
