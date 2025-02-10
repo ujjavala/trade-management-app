@@ -235,6 +235,18 @@
           "build/net6.0/_._": {}
         }
       },
+      "Microsoft.EntityFrameworkCore.InMemory/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll": {}
+        }
+      },
       "Microsoft.EntityFrameworkCore.Relational/6.0.0": {
         "type": "package",
         "dependencies": {
@@ -2989,6 +3001,7 @@
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.0",
           "Microsoft.EntityFrameworkCore": "6.0.0",
           "Microsoft.EntityFrameworkCore.Design": "6.0.0",
+          "Microsoft.EntityFrameworkCore.InMemory": "6.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.0",
           "Microsoft.EntityFrameworkCore.Sqlite": "6.0.0",
           "Swashbuckle.AspNetCore": "6.2.3",
@@ -3435,6 +3448,20 @@
         "lib/net6.0/Microsoft.EntityFrameworkCore.Design.xml",
         "microsoft.entityframeworkcore.design.6.0.0.nupkg.sha512",
         "microsoft.entityframeworkcore.design.nuspec"
+      ]
+    },
+    "Microsoft.EntityFrameworkCore.InMemory/6.0.0": {
+      "sha512": "WJmphvCn0wue9AX+Wvqj3XZ3ehNi9oyYBFNLtHVNvKqZrcimXBOqLo5RNf1fJWYSLWhOia/vzG4JtkAeZxZ8FQ==",
+      "type": "package",
+      "path": "microsoft.entityframeworkcore.inmemory/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "lib/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll",
+        "lib/net6.0/Microsoft.EntityFrameworkCore.InMemory.xml",
+        "microsoft.entityframeworkcore.inmemory.6.0.0.nupkg.sha512",
+        "microsoft.entityframeworkcore.inmemory.nuspec"
       ]
     },
     "Microsoft.EntityFrameworkCore.Relational/6.0.0": {
@@ -9495,6 +9522,7 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "Microsoft.AspNetCore.Mvc.Testing >= 5.0.6",
+      "Microsoft.EntityFrameworkCore.InMemory >= 6.0.0",
       "Microsoft.NET.Test.Sdk >= 16.9.4",
       "Moq >= 4.16.1",
       "TradeManagementApp.API >= 1.0.0",
@@ -9554,6 +9582,10 @@
           "Microsoft.AspNetCore.Mvc.Testing": {
             "target": "Package",
             "version": "[5.0.6, )"
+          },
+          "Microsoft.EntityFrameworkCore.InMemory": {
+            "target": "Package",
+            "version": "[6.0.0, )"
           },
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",

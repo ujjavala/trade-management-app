@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using TradeManagementApp.Models;
 
 #nullable disable
 
@@ -30,11 +31,11 @@ namespace TradeManagementApp.Persistence.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AccountId = table.Column<int>(type: "INTEGER", nullable: false),
-                    SecurityCode = table.Column<string>(type: "TEXT", nullable: false),
+                    SecurityCode = table.Column<string>(type: "TEXT", maxLength: 3, nullable: false),
                     Timestamp = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Amount = table.Column<decimal>(type: "TEXT", nullable: false),
                     BuyOrSell = table.Column<string>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false)
+                    Status = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,12 +61,20 @@ namespace TradeManagementApp.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Trades",
                 columns: new[] { "Id", "AccountId", "Amount", "BuyOrSell", "SecurityCode", "Status", "Timestamp" },
-                values: new object[] { 1, 1, 100m, "Buy", "AAPL", "Completed", new DateTime(2025, 2, 10, 12, 46, 11, 574, DateTimeKind.Local).AddTicks(1360) });
+                values: new object[] { 1, 1, 100m, "Buy", "APL", (int)TradeStatus.Executed, new DateTime(2025, 2, 10, 12, 46, 11, 574, DateTimeKind.Local).AddTicks(1360) });
 
             migrationBuilder.InsertData(
                 table: "Trades",
                 columns: new[] { "Id", "AccountId", "Amount", "BuyOrSell", "SecurityCode", "Status", "Timestamp" },
-                values: new object[] { 2, 2, 200m, "Sell", "GOOGL", "Completed", new DateTime(2025, 2, 10, 12, 46, 11, 574, DateTimeKind.Local).AddTicks(1390) });
+                values: new object[] { 2, 2, 200m, "Sell", "GOL", (int)TradeStatus.Executed, new DateTime(2025, 2, 10, 12, 46, 11, 574, DateTimeKind.Local).AddTicks(1390) });
+
+            for (int i = 3; i <= 52; i++)
+            {
+                migrationBuilder.InsertData(
+                    table: "Trades",
+                    columns: new[] { "Id", "AccountId", "Amount", "BuyOrSell", "SecurityCode", "Status", "Timestamp" },
+                    values: new object[] { i, (i % 2) + 1, i * 10m, i % 2 == 0 ? "Buy" : "Sell", "SEC" + (i % 100).ToString("D2"), (int)TradeStatus.Placed, new DateTime(2025, 2, 10, 12, 46, 11, 574, DateTimeKind.Local).AddTicks(1360 + i) });
+            }
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trades_AccountId",

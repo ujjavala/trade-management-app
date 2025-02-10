@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using TradeManagementApp.API.Services;
-using TradeManagementApp.API.Services.Strategies;
 using TradeManagementApp.Persistence;
 using TradeManagementApp.Persistence.Repositories;
 
@@ -25,19 +24,22 @@ namespace TradeManagementApp.API
         {
             services.AddControllers();
 
-            // Register the DataContext with the connection string
-            services.AddDbContext<DataContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            // Use in-memory database for testing
+            if (Configuration.GetValue<bool>("UseInMemoryDatabase"))
+            {
+                services.AddDbContext<DataContext>(options =>
+                    options.UseInMemoryDatabase("InMemoryDbForTesting"));
+            }
+            else
+            {
+                services.AddDbContext<DataContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
 
             services.AddScoped<ITradeRepository, TradeRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ITradeService, TradeService>();
             services.AddScoped<IAccountService, AccountService>();
-
-            // Register the strategies
-            services.AddScoped<ITradeProcessingStrategy, StandardTradeProcessingStrategy>();
-            // To use HighValueTradeProcessingStrategy, uncomment the following line and comment the above line
-            // services.AddScoped<ITradeProcessingStrategy, HighValueTradeProcessingStrategy>();
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>

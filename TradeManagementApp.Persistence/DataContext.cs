@@ -1,6 +1,6 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using TradeManagementApp.Models;
+using System;
 
 namespace TradeManagementApp.Persistence
 {
@@ -8,12 +8,21 @@ namespace TradeManagementApp.Persistence
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        public DbSet<Account> Accounts { get; set; } = null!;
-        public DbSet<Trade> Trades { get; set; } = null!;
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Trade> Trades { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Trade>()
+                .Property(t => t.Amount)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Trade>()
+                .HasOne(t => t.Account)
+                .WithMany(a => a.Trades)
+                .HasForeignKey(t => t.AccountId);
 
             // Seed data for Accounts
             modelBuilder.Entity<Account>().HasData(
@@ -23,8 +32,8 @@ namespace TradeManagementApp.Persistence
 
             // Seed data for Trades
             modelBuilder.Entity<Trade>().HasData(
-                new Trade { Id = 1, AccountId = 1, SecurityCode = "AAPL", Timestamp = DateTime.Now, Amount = 100, BuyOrSell = "Buy", Status = "Completed" },
-                new Trade { Id = 2, AccountId = 2, SecurityCode = "GOOGL", Timestamp = DateTime.Now, Amount = 200, BuyOrSell = "Sell", Status = "Completed" }
+                new Trade { Id = 1, AccountId = 1, SecurityCode = "AAP", Timestamp = DateTime.Now, Amount = 100, BuyOrSell = "Buy", Status = TradeStatus.Executed },
+                new Trade { Id = 2, AccountId = 2, SecurityCode = "OGL", Timestamp = DateTime.Now, Amount = 200, BuyOrSell = "Sell", Status = TradeStatus.Executed }
             );
         }
     }

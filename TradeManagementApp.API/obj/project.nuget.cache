@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "UF4JAl1rSfMtTg9Fgfc9qioPzNc5zVoaiAGIQ2TW0UEwfNhTVYLnNhIaYf+Gyszg4I67i+lTBqixyDUHAwtX+Q==",
+  "dgSpecHash": "kHAqRcXNOEkQFIIOqgaGkCYph4RZXHWmEaCiXe0sJlpmtZ8sYWSAekSkLEu4Q4Jd6gJPSUblToBNxMNCXK2qzQ==",
   "success": true,
   "projectFilePath": "/Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.API/TradeManagementApp.API.csproj",
   "expectedPackageFiles": [
@@ -15,6 +15,7 @@
     "/Users/ujja/.nuget/packages/microsoft.entityframeworkcore.abstractions/6.0.0/microsoft.entityframeworkcore.abstractions.6.0.0.nupkg.sha512",
     "/Users/ujja/.nuget/packages/microsoft.entityframeworkcore.analyzers/6.0.0/microsoft.entityframeworkcore.analyzers.6.0.0.nupkg.sha512",
     "/Users/ujja/.nuget/packages/microsoft.entityframeworkcore.design/6.0.0/microsoft.entityframeworkcore.design.6.0.0.nupkg.sha512",
+    "/Users/ujja/.nuget/packages/microsoft.entityframeworkcore.inmemory/6.0.0/microsoft.entityframeworkcore.inmemory.6.0.0.nupkg.sha512",
     "/Users/ujja/.nuget/packages/microsoft.entityframeworkcore.relational/6.0.0/microsoft.entityframeworkcore.relational.6.0.0.nupkg.sha512",
     "/Users/ujja/.nuget/packages/microsoft.entityframeworkcore.sqlite/6.0.0/microsoft.entityframeworkcore.sqlite.6.0.0.nupkg.sha512",
     "/Users/ujja/.nuget/packages/microsoft.entityframeworkcore.sqlite.core/6.0.0/microsoft.entityframeworkcore.sqlite.core.6.0.0.nupkg.sha512",

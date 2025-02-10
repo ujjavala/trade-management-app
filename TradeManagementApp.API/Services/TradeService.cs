@@ -2,19 +2,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TradeManagementApp.Models;
 using TradeManagementApp.Persistence.Repositories;
-using TradeManagementApp.API.Services.Strategies;
 
 namespace TradeManagementApp.API.Services
 {
     public class TradeService : ITradeService
     {
         private readonly ITradeRepository _tradeRepository;
-        private readonly ITradeProcessingStrategy _tradeProcessingStrategy;
+        private readonly IAccountRepository _accountRepository;
 
-        public TradeService(ITradeRepository tradeRepository, ITradeProcessingStrategy tradeProcessingStrategy)
+        public TradeService(ITradeRepository tradeRepository, IAccountRepository accountRepository)
         {
             _tradeRepository = tradeRepository;
-            _tradeProcessingStrategy = tradeProcessingStrategy;
+            _accountRepository = accountRepository;
         }
 
         public async Task<IEnumerable<Trade>> GetAllTradesAsync()
@@ -29,19 +28,42 @@ namespace TradeManagementApp.API.Services
 
         public async Task AddTradeAsync(Trade trade)
         {
-            _tradeProcessingStrategy.ProcessTrade(trade);
-            await _tradeRepository.AddTradeAsync(trade);
+            if (await _accountRepository.GetAccountByIdAsync(trade.AccountId) != null)
+            {
+                await _tradeRepository.AddTradeAsync(trade);
+            }
+            else
+            {
+                throw new KeyNotFoundException("Account ID does not exist.");
+            }
         }
 
         public async Task UpdateTradeAsync(Trade trade)
         {
-            _tradeProcessingStrategy.ProcessTrade(trade);
-            await _tradeRepository.UpdateTradeAsync(trade);
+            if (await _accountRepository.GetAccountByIdAsync(trade.AccountId) != null)
+            {
+                await _tradeRepository.UpdateTradeAsync(trade);
+            }
+            else
+            {
+                throw new KeyNotFoundException("Account ID does not exist.");
+            }
         }
 
         public async Task DeleteTradeAsync(int id)
         {
-            await _tradeRepository.DeleteTradeAsync(id);
+            var trade = await _tradeRepository.GetTradeByIdAsync(id);
+            if (trade != null)
+            {
+                if (await _accountRepository.GetAccountByIdAsync(trade.AccountId) != null)
+                {
+                    await _tradeRepository.DeleteTradeAsync(id);
+                }
+                else
+                {
+                    throw new KeyNotFoundException("Account ID does not exist.");
+                }
+            }
         }
     }
 }
