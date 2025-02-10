@@ -1,35 +1,39 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Moq;
-using TradeManagementApp.API.Services;
-using TradeManagementApp.Models;
-using TradeManagementApp.Persistence.Repositories;
-using Xunit;
+// <copyright file="TradeServiceTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace TradeManagementApp.Tests.Services
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Moq;
+    using TradeManagementApp.API.Services;
+    using TradeManagementApp.Models;
+    using TradeManagementApp.Persistence.Repositories;
+    using Xunit;
+
     public class TradeServiceTests
     {
-        private readonly ITradeService _service;
-        private readonly Mock<ITradeRepository> _mockTradeRepository;
-        private readonly Mock<IAccountRepository> _mockAccountRepository;
+        private readonly ITradeService service;
+        private readonly Mock<ITradeRepository> mockTradeRepository;
+        private readonly Mock<IAccountRepository> mockAccountRepository;
 
         public TradeServiceTests()
         {
-            _mockTradeRepository = new Mock<ITradeRepository>();
-            _mockAccountRepository = new Mock<IAccountRepository>();
-            _service = new TradeService(_mockTradeRepository.Object, _mockAccountRepository.Object);
+            mockTradeRepository = new Mock<ITradeRepository>();
+            mockAccountRepository = new Mock<IAccountRepository>();
+            service = new TradeService(mockTradeRepository.Object, mockAccountRepository.Object);
         }
 
         [Fact]
         public async Task GetAllTradesAsync_ReturnsTrades()
         {
             // Arrange
-            _mockTradeRepository.Setup(repo => repo.GetAllTradesAsync())
+            mockTradeRepository.Setup(repo => repo.GetAllTradesAsync())
                 .ReturnsAsync(new List<Trade>());
 
             // Act
-            var result = await _service.GetAllTradesAsync();
+            var result = await service.GetAllTradesAsync();
 
             // Assert
             Assert.IsType<List<Trade>>(result);
@@ -41,11 +45,11 @@ namespace TradeManagementApp.Tests.Services
             // Arrange
             var tradeId = 1;
             var trade = new Trade { Id = tradeId, SecurityCode = "AAPL", Amount = 100 };
-            _mockTradeRepository.Setup(repo => repo.GetTradeByIdAsync(tradeId))
+            mockTradeRepository.Setup(repo => repo.GetTradeByIdAsync(tradeId))
                 .ReturnsAsync(trade);
 
             // Act
-            var result = await _service.GetTradeByIdAsync(tradeId);
+            var result = await service.GetTradeByIdAsync(tradeId);
 
             // Assert
             Assert.IsType<Trade>(result);
@@ -56,16 +60,16 @@ namespace TradeManagementApp.Tests.Services
         {
             // Arrange
             var trade = new Trade { SecurityCode = "AAPL", Amount = 100, AccountId = 1 };
-            _mockTradeRepository.Setup(repo => repo.AddTradeAsync(trade))
+            mockTradeRepository.Setup(repo => repo.AddTradeAsync(trade))
                 .Returns(Task.CompletedTask);
-            _mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade.AccountId))
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade.AccountId))
                 .ReturnsAsync(new Account { Id = trade.AccountId });
 
             // Act
-            await _service.AddTradeAsync(trade);
+            await service.AddTradeAsync(trade);
 
             // Assert
-            _mockTradeRepository.Verify(repo => repo.AddTradeAsync(trade), Times.Once);
+            mockTradeRepository.Verify(repo => repo.AddTradeAsync(trade), Times.Once);
         }
 
         [Fact]
@@ -73,16 +77,16 @@ namespace TradeManagementApp.Tests.Services
         {
             // Arrange
             var trade = new Trade { Id = 1, SecurityCode = "AAPL", Amount = 100, AccountId = 1 };
-            _mockTradeRepository.Setup(repo => repo.UpdateTradeAsync(trade))
+            mockTradeRepository.Setup(repo => repo.UpdateTradeAsync(trade))
                 .Returns(Task.CompletedTask);
-            _mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade.AccountId))
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade.AccountId))
                 .ReturnsAsync(new Account { Id = trade.AccountId });
 
             // Act
-            await _service.UpdateTradeAsync(trade);
+            await service.UpdateTradeAsync(trade);
 
             // Assert
-            _mockTradeRepository.Verify(repo => repo.UpdateTradeAsync(trade), Times.Once);
+            mockTradeRepository.Verify(repo => repo.UpdateTradeAsync(trade), Times.Once);
         }
 
         [Fact]
@@ -91,18 +95,18 @@ namespace TradeManagementApp.Tests.Services
             // Arrange
             var tradeId = 1;
             var trade = new Trade { Id = tradeId, AccountId = 1 };
-            _mockTradeRepository.Setup(repo => repo.GetTradeByIdAsync(tradeId))
+            mockTradeRepository.Setup(repo => repo.GetTradeByIdAsync(tradeId))
                 .ReturnsAsync(trade);
-            _mockTradeRepository.Setup(repo => repo.DeleteTradeAsync(tradeId))
+            mockTradeRepository.Setup(repo => repo.DeleteTradeAsync(tradeId))
                 .Returns(Task.CompletedTask);
-            _mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade.AccountId))
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade.AccountId))
                 .ReturnsAsync(new Account { Id = trade.AccountId });
 
             // Act
-            await _service.DeleteTradeAsync(tradeId);
+            await service.DeleteTradeAsync(tradeId);
 
             // Assert
-            _mockTradeRepository.Verify(repo => repo.DeleteTradeAsync(tradeId), Times.Once);
+            mockTradeRepository.Verify(repo => repo.DeleteTradeAsync(tradeId), Times.Once);
         }
     }
 }

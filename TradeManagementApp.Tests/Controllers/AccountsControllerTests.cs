@@ -1,34 +1,39 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using TradeManagementApp.API.Controllers;
-using TradeManagementApp.API.Services;
-using TradeManagementApp.Models;
-using Xunit;
+// <copyright file="AccountsControllerTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace TradeManagementApp.Tests.Controllers
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
+    using Moq;
+    using TradeManagementApp.API.Controllers;
+    using TradeManagementApp.API.Services;
+    using TradeManagementApp.Models;
+    using Xunit;
+
+
     public class AccountsControllerTests
     {
-        private readonly AccountsController _controller;
-        private readonly Mock<IAccountService> _mockAccountService;
+        private readonly AccountsController controller;
+        private readonly Mock<IAccountService> mockAccountService;
 
         public AccountsControllerTests()
         {
-            _mockAccountService = new Mock<IAccountService>();
-            _controller = new AccountsController(_mockAccountService.Object);
+            mockAccountService = new Mock<IAccountService>();
+            controller = new AccountsController(mockAccountService.Object);
         }
 
         [Fact]
         public async Task GetAllAccounts_ReturnsOkResult()
         {
             // Arrange
-            _mockAccountService.Setup(service => service.GetAllAccountsAsync())
+            mockAccountService.Setup(service => service.GetAllAccountsAsync())
                 .ReturnsAsync(new List<Account>());
 
             // Act
-            var result = await _controller.GetAllAccounts();
+            var result = await controller.GetAllAccounts();
 
             // Assert
             var okResult = Assert.IsType<ActionResult<IEnumerable<Account>>>(result);
@@ -41,11 +46,11 @@ namespace TradeManagementApp.Tests.Controllers
             // Arrange
             var accountId = 1;
             var account = new Account { Id = accountId, FirstName = "John", LastName = "Doe" };
-            _mockAccountService.Setup(service => service.GetAccountByIdAsync(accountId))
+            mockAccountService.Setup(service => service.GetAccountByIdAsync(accountId))
                 .ReturnsAsync(account);
 
             // Act
-            var result = await _controller.GetAccountById(accountId);
+            var result = await controller.GetAccountById(accountId);
 
             // Assert
             var okResult = Assert.IsType<ActionResult<Account>>(result);
@@ -57,11 +62,11 @@ namespace TradeManagementApp.Tests.Controllers
         {
             // Arrange
             var account = new Account { FirstName = "John", LastName = "Doe" };
-            _mockAccountService.Setup(service => service.AddAccountAsync(account))
+            mockAccountService.Setup(service => service.AddAccountAsync(account))
                 .Returns(Task.CompletedTask);
 
             // Act
-            var result = await _controller.CreateAccount(account);
+            var result = await controller.CreateAccount(account);
 
             // Assert
             var createdResult = Assert.IsType<ActionResult<Account>>(result);
@@ -74,11 +79,11 @@ namespace TradeManagementApp.Tests.Controllers
             // Arrange
             var accountId = 1;
             var account = new Account { Id = accountId, FirstName = "John", LastName = "Doe" };
-            _mockAccountService.Setup(service => service.UpdateAccountAsync(account))
+            mockAccountService.Setup(service => service.UpdateAccountAsync(account))
                 .Returns(Task.CompletedTask);
 
             // Act
-            var result = await _controller.UpdateAccount(accountId, account);
+            var result = await controller.UpdateAccount(accountId, account);
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -89,11 +94,11 @@ namespace TradeManagementApp.Tests.Controllers
         {
             // Arrange
             var accountId = 1;
-            _mockAccountService.Setup(service => service.DeleteAccountAsync(accountId))
+            mockAccountService.Setup(service => service.DeleteAccountAsync(accountId))
                 .Returns(Task.CompletedTask);
 
             // Act
-            var result = await _controller.DeleteAccount(accountId);
+            var result = await controller.DeleteAccount(accountId);
 
             // Assert
             Assert.IsType<NoContentResult>(result);

@@ -1,18 +1,22 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using TradeManagementApp.API.Services;
-using TradeManagementApp.Persistence;
-using TradeManagementApp.Persistence.Repositories;
-using System.Text.Json.Serialization;
-
+// <copyright file="Startup.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace TradeManagementApp.API
 {
+    using System.Text.Json.Serialization;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.OpenApi.Models;
+    using TradeManagementApp.API.Services;
+    using TradeManagementApp.Persistence;
+    using TradeManagementApp.Persistence.Repositories;
+
+
     public class Startup
     {
         public Startup(IConfiguration configuration)

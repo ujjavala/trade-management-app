@@ -1,36 +1,43 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using TradeManagementApp.Models;
-using TradeManagementApp.Persistence.Repositories;
+// <copyright file="TradeService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace TradeManagementApp.API.Services
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using TradeManagementApp.Models;
+    using TradeManagementApp.Persistence.Repositories;
+
     public class TradeService : ITradeService
     {
-        private readonly ITradeRepository _tradeRepository;
-        private readonly IAccountRepository _accountRepository;
+        private readonly ITradeRepository tradeRepository;
+        private readonly IAccountRepository accountRepository;
 
         public TradeService(ITradeRepository tradeRepository, IAccountRepository accountRepository)
         {
-            _tradeRepository = tradeRepository;
-            _accountRepository = accountRepository;
+            this.tradeRepository = tradeRepository;
+            this.accountRepository = accountRepository;
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<Trade>> GetAllTradesAsync()
         {
-            return await _tradeRepository.GetAllTradesAsync();
+            return await tradeRepository.GetAllTradesAsync();
         }
 
+        /// <inheritdoc/>
         public async Task<Trade> GetTradeByIdAsync(int id)
         {
-            return await _tradeRepository.GetTradeByIdAsync(id);
+            return await tradeRepository.GetTradeByIdAsync(id);
         }
 
+        /// <inheritdoc/>
         public async Task AddTradeAsync(Trade trade)
         {
-            if (await _accountRepository.GetAccountByIdAsync(trade.AccountId) != null)
+            if (await accountRepository.GetAccountByIdAsync(trade.AccountId) != null)
             {
-                await _tradeRepository.AddTradeAsync(trade);
+                await tradeRepository.AddTradeAsync(trade);
             }
             else
             {
@@ -38,11 +45,12 @@ namespace TradeManagementApp.API.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task UpdateTradeAsync(Trade trade)
         {
-            if (await _accountRepository.GetAccountByIdAsync(trade.AccountId) != null)
+            if (await accountRepository.GetAccountByIdAsync(trade.AccountId) != null)
             {
-                await _tradeRepository.UpdateTradeAsync(trade);
+                await tradeRepository.UpdateTradeAsync(trade);
             }
             else
             {
@@ -50,14 +58,15 @@ namespace TradeManagementApp.API.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task DeleteTradeAsync(int id)
         {
-            var trade = await _tradeRepository.GetTradeByIdAsync(id);
+            var trade = await tradeRepository.GetTradeByIdAsync(id);
             if (trade != null)
             {
-                if (await _accountRepository.GetAccountByIdAsync(trade.AccountId) != null)
+                if (await accountRepository.GetAccountByIdAsync(trade.AccountId) != null)
                 {
-                    await _tradeRepository.DeleteTradeAsync(id);
+                    await tradeRepository.DeleteTradeAsync(id);
                 }
                 else
                 {

@@ -1,33 +1,37 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Moq;
-using TradeManagementApp.API.Services;
-using TradeManagementApp.Models;
-using TradeManagementApp.Persistence.Repositories;
-using Xunit;
+// <copyright file="AccountServiceTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace TradeManagementApp.Tests.Services
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Moq;
+    using TradeManagementApp.API.Services;
+    using TradeManagementApp.Models;
+    using TradeManagementApp.Persistence.Repositories;
+    using Xunit;
+
     public class AccountServiceTests
     {
-        private readonly IAccountService _service;
-        private readonly Mock<IAccountRepository> _mockAccountRepository;
+        private readonly IAccountService service;
+        private readonly Mock<IAccountRepository> mockAccountRepository;
 
         public AccountServiceTests()
         {
-            _mockAccountRepository = new Mock<IAccountRepository>();
-            _service = new AccountService(_mockAccountRepository.Object);
+            mockAccountRepository = new Mock<IAccountRepository>();
+            service = new AccountService(mockAccountRepository.Object);
         }
 
         [Fact]
         public async Task GetAllAccountsAsync_ReturnsAccounts()
         {
             // Arrange
-            _mockAccountRepository.Setup(repo => repo.GetAllAccountsAsync())
+            mockAccountRepository.Setup(repo => repo.GetAllAccountsAsync())
                 .ReturnsAsync(new List<Account>());
 
             // Act
-            var result = await _service.GetAllAccountsAsync();
+            var result = await service.GetAllAccountsAsync();
 
             // Assert
             Assert.IsType<List<Account>>(result);
@@ -39,11 +43,11 @@ namespace TradeManagementApp.Tests.Services
             // Arrange
             var accountId = 1;
             var account = new Account { Id = accountId, FirstName = "John", LastName = "Doe" };
-            _mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(accountId))
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(accountId))
                 .ReturnsAsync(account);
 
             // Act
-            var result = await _service.GetAccountByIdAsync(accountId);
+            var result = await service.GetAccountByIdAsync(accountId);
 
             // Assert
             Assert.IsType<Account>(result);
@@ -54,14 +58,14 @@ namespace TradeManagementApp.Tests.Services
         {
             // Arrange
             var account = new Account { FirstName = "John", LastName = "Doe" };
-            _mockAccountRepository.Setup(repo => repo.AddAccountAsync(account))
+            mockAccountRepository.Setup(repo => repo.AddAccountAsync(account))
                 .Returns(Task.CompletedTask);
 
             // Act
-            await _service.AddAccountAsync(account);
+            await service.AddAccountAsync(account);
 
             // Assert
-            _mockAccountRepository.Verify(repo => repo.AddAccountAsync(account), Times.Once);
+            mockAccountRepository.Verify(repo => repo.AddAccountAsync(account), Times.Once);
         }
 
         [Fact]
@@ -69,14 +73,14 @@ namespace TradeManagementApp.Tests.Services
         {
             // Arrange
             var account = new Account { Id = 1, FirstName = "John", LastName = "Doe" };
-            _mockAccountRepository.Setup(repo => repo.UpdateAccountAsync(account))
+            mockAccountRepository.Setup(repo => repo.UpdateAccountAsync(account))
                 .Returns(Task.CompletedTask);
 
             // Act
-            await _service.UpdateAccountAsync(account);
+            await service.UpdateAccountAsync(account);
 
             // Assert
-            _mockAccountRepository.Verify(repo => repo.UpdateAccountAsync(account), Times.Once);
+            mockAccountRepository.Verify(repo => repo.UpdateAccountAsync(account), Times.Once);
         }
 
         [Fact]
@@ -84,14 +88,14 @@ namespace TradeManagementApp.Tests.Services
         {
             // Arrange
             var accountId = 1;
-            _mockAccountRepository.Setup(repo => repo.DeleteAccountAsync(accountId))
+            mockAccountRepository.Setup(repo => repo.DeleteAccountAsync(accountId))
                 .Returns(Task.CompletedTask);
 
             // Act
-            await _service.DeleteAccountAsync(accountId);
+            await service.DeleteAccountAsync(accountId);
 
             // Assert
-            _mockAccountRepository.Verify(repo => repo.DeleteAccountAsync(accountId), Times.Once);
+            mockAccountRepository.Verify(repo => repo.DeleteAccountAsync(accountId), Times.Once);
         }
     }
 }

@@ -1,34 +1,39 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using TradeManagementApp.API.Controllers;
-using TradeManagementApp.API.Services;
-using TradeManagementApp.Models;
-using Xunit;
+// <copyright file="TradesControllerTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace TradeManagementApp.Tests.Controllers
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
+    using Moq;
+    using TradeManagementApp.API.Controllers;
+    using TradeManagementApp.API.Services;
+    using TradeManagementApp.Models;
+    using Xunit;
+
+
     public class TradesControllerTests
     {
-        private readonly TradesController _controller;
-        private readonly Mock<ITradeService> _mockTradeService;
+        private readonly TradesController controller;
+        private readonly Mock<ITradeService> mockTradeService;
 
         public TradesControllerTests()
         {
-            _mockTradeService = new Mock<ITradeService>();
-            _controller = new TradesController(_mockTradeService.Object);
+            mockTradeService = new Mock<ITradeService>();
+            controller = new TradesController(mockTradeService.Object);
         }
 
         [Fact]
         public async Task GetAllTrades_ReturnsOkResult()
         {
             // Arrange
-            _mockTradeService.Setup(service => service.GetAllTradesAsync())
+            mockTradeService.Setup(service => service.GetAllTradesAsync())
                 .ReturnsAsync(new List<Trade>());
 
             // Act
-            var result = await _controller.GetAllTrades();
+            var result = await controller.GetAllTrades();
 
             // Assert
             var okResult = Assert.IsType<ActionResult<IEnumerable<Trade>>>(result);
@@ -41,11 +46,11 @@ namespace TradeManagementApp.Tests.Controllers
             // Arrange
             var tradeId = 1;
             var trade = new Trade { Id = tradeId, SecurityCode = "AAPL", Amount = 100 };
-            _mockTradeService.Setup(service => service.GetTradeByIdAsync(tradeId))
+            mockTradeService.Setup(service => service.GetTradeByIdAsync(tradeId))
                 .ReturnsAsync(trade);
 
             // Act
-            var result = await _controller.GetTradeById(tradeId);
+            var result = await controller.GetTradeById(tradeId);
 
             // Assert
             var okResult = Assert.IsType<ActionResult<Trade>>(result);
@@ -57,11 +62,11 @@ namespace TradeManagementApp.Tests.Controllers
         {
             // Arrange
             var trade = new Trade { SecurityCode = "AAPL", Amount = 100 };
-            _mockTradeService.Setup(service => service.AddTradeAsync(trade))
+            mockTradeService.Setup(service => service.AddTradeAsync(trade))
                 .Returns(Task.CompletedTask);
 
             // Act
-            var result = await _controller.CreateTrade(trade);
+            var result = await controller.CreateTrade(trade);
 
             // Assert
             var createdResult = Assert.IsType<ActionResult<Trade>>(result);
@@ -74,11 +79,11 @@ namespace TradeManagementApp.Tests.Controllers
             // Arrange
             var tradeId = 1;
             var trade = new Trade { Id = tradeId, SecurityCode = "AAPL", Amount = 100 };
-            _mockTradeService.Setup(service => service.UpdateTradeAsync(trade))
+            mockTradeService.Setup(service => service.UpdateTradeAsync(trade))
                 .Returns(Task.CompletedTask);
 
             // Act
-            var result = await _controller.UpdateTrade(tradeId, trade);
+            var result = await controller.UpdateTrade(tradeId, trade);
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -89,11 +94,11 @@ namespace TradeManagementApp.Tests.Controllers
         {
             // Arrange
             var tradeId = 1;
-            _mockTradeService.Setup(service => service.DeleteTradeAsync(tradeId))
+            mockTradeService.Setup(service => service.DeleteTradeAsync(tradeId))
                 .Returns(Task.CompletedTask);
 
             // Act
-            var result = await _controller.DeleteTrade(tradeId);
+            var result = await controller.DeleteTrade(tradeId);
 
             // Assert
             Assert.IsType<NoContentResult>(result);
