@@ -13,7 +13,6 @@ namespace TradeManagementApp.Tests.Controllers
     using TradeManagementApp.Models;
     using Xunit;
 
-
     public class TradesControllerTests
     {
         private readonly TradesController controller;

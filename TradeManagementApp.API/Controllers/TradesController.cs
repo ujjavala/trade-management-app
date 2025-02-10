@@ -36,6 +36,7 @@ namespace TradeManagementApp.API.Controllers
             {
                 return NotFound();
             }
+
             return Ok(trade);
         }
 

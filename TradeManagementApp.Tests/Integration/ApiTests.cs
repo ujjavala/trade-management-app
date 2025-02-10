@@ -24,14 +24,14 @@ public class ApiTests : IClassFixture<CustomWebApplicationFactory<TradeManagemen
         response.EnsureSuccessStatusCode();
     }
 
-      [Fact (Skip="True")]
+    [Fact(Skip="True")]
     public async Task GetAccountById_ReturnsSuccessStatusCode()
     {
         var response = await client.GetAsync("/api/accounts/1");
         response.EnsureSuccessStatusCode();
     }
 
-        [Fact (Skip="True")]
+    [Fact(Skip="True")]
     public async Task CreateAccount_ReturnsSuccessStatusCode()
     {
         var content = new StringContent("{\"firstName\":\"John\",\"lastName\":\"Doe\"}", Encoding.UTF8, "application/json");
@@ -39,7 +39,7 @@ public class ApiTests : IClassFixture<CustomWebApplicationFactory<TradeManagemen
         response.EnsureSuccessStatusCode();
     }
 
-       [Fact (Skip="True")]
+    [Fact(Skip="True")]
     public async Task UpdateAccount_ReturnsSuccessStatusCode()
     {
         var content = new StringContent("{\"id\":1,\"firstName\":\"John\",\"lastName\":\"Doe\"}", Encoding.UTF8, "application/json");
@@ -55,7 +55,6 @@ public class ApiTests : IClassFixture<CustomWebApplicationFactory<TradeManagemen
     }
 
     // Add similar tests for the Trades endpoints
-
     [Fact]
     public async Task GetAllTrades_ReturnsSuccessStatusCode()
     {
@@ -70,15 +69,15 @@ public class ApiTests : IClassFixture<CustomWebApplicationFactory<TradeManagemen
         response.EnsureSuccessStatusCode();
     }
 
-    [Fact (Skip="True")]
-        public async Task CreateTrade_ReturnsSuccessStatusCode()
+    [Fact(Skip="True")]
+    public async Task CreateTrade_ReturnsSuccessStatusCode()
     {
         var content = new StringContent("{\"accountId\":1,\"securityCode\":\"APL\",\"timestamp\":\"2025-02-10T00:00:00Z\",\"amount\":100,\"buyOrSell\":\"Buy\",\"status\":0}", Encoding.UTF8, "application/json");
         var response = await client.PostAsync("/api/trades", content);
         response.EnsureSuccessStatusCode();
     }
 
-    [Fact (Skip="True")]
+    [Fact(Skip="True")]
     public async Task UpdateTrade_ReturnsSuccessStatusCode()
     {
         var content = new StringContent("{\"id\":1,\"accountId\":1,\"securityCode\":\"APL\",\"timestamp\":\"2025-02-10T00:00:00Z\",\"amount\":100,\"buyOrSell\":\"Buy\",\"status\":1}", Encoding.UTF8, "application/json");
@@ -86,7 +85,7 @@ public class ApiTests : IClassFixture<CustomWebApplicationFactory<TradeManagemen
         response.EnsureSuccessStatusCode();
     }
 
-     [Fact(Skip="True")]
+    [Fact(Skip="True")]
     public async Task DeleteTrade_ReturnsSuccessStatusCode()
     {
         var response = await client.DeleteAsync("/api/trades/1");

@@ -14,3 +14,5 @@ dotnet_style_qualification_for_field = true:suggestion
 dotnet_style_qualification_for_property = true:suggestion
 dotnet_style_qualification_for_method = true:suggestion
 dotnet_style_qualification_for_event = true:suggestion
+dotnet_diagnostic.SA1101.severity = none
+dotnet_diagnostic.SA1101.severity = none

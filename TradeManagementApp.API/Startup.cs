@@ -16,7 +16,6 @@ namespace TradeManagementApp.API
     using TradeManagementApp.Persistence;
     using TradeManagementApp.Persistence.Repositories;
 
-
     public class Startup
     {
         public Startup(IConfiguration configuration)
