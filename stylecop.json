@@ -1,0 +1,13 @@
+{
+    "settings": {
+      "documentationRules": {
+        "companyName": "sample",
+        "documentExposedElements": true,
+        "documentInternalElements": true
+      },
+      "orderingRules": {
+        "usingDirectivesPlacement": "sample",
+        "systemUsingDirectivesFirst": true
+      }
+    }
+  }
