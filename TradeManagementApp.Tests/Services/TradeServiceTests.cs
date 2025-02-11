@@ -4,6 +4,7 @@
 
 namespace TradeManagementApp.Tests.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Moq;
@@ -44,7 +45,7 @@ namespace TradeManagementApp.Tests.Services
         {
             // Arrange
             var tradeId = 1;
-            var trade = new Trade { Id = tradeId, SecurityCode = "AAPL", Amount = 100 };
+            var trade = new Trade { Id = tradeId, SecurityCode = "APL", Amount = 100 };
             mockTradeRepository.Setup(repo => repo.GetTradeByIdAsync(tradeId))
                 .ReturnsAsync(trade);
 
@@ -53,13 +54,29 @@ namespace TradeManagementApp.Tests.Services
 
             // Assert
             Assert.IsType<Trade>(result);
+            Assert.Equal(tradeId, result.Id);
+        }
+
+        [Fact]
+        public async Task GetTradeByIdAsync_ReturnsNull_WhenTradeNotFound()
+        {
+            // Arrange
+            var tradeId = 1;
+            mockTradeRepository.Setup(repo => repo.GetTradeByIdAsync(tradeId))
+                .ReturnsAsync((Trade)null);
+
+            // Act
+            var result = await service.GetTradeByIdAsync(tradeId);
+
+            // Assert
+            Assert.Null(result);
         }
 
         [Fact]
         public async Task AddTradeAsync_AddsTrade()
         {
             // Arrange
-            var trade = new Trade { SecurityCode = "AAPL", Amount = 100, AccountId = 1 };
+            var trade = new Trade { SecurityCode = "APL", Amount = 100, AccountId = 1 };
             mockTradeRepository.Setup(repo => repo.AddTradeAsync(trade))
                 .Returns(Task.CompletedTask);
             mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade.AccountId))
@@ -73,10 +90,38 @@ namespace TradeManagementApp.Tests.Services
         }
 
         [Fact]
+        public async Task AddTradeAsync_ThrowsException_WhenAccountNotFound()
+        {
+            // Arrange
+            var trade = new Trade { SecurityCode = "APL", Amount = 100, AccountId = 1 };
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade.AccountId))
+                .ReturnsAsync((Account)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => service.AddTradeAsync(trade));
+        }
+
+        [Fact]
+        public async Task AddTradeAsync_ThrowsException_WhenSecurityCodeIsInvalid()
+        {
+            // Arrange
+            var trade1 = new Trade { SecurityCode = "AP", Amount = 100, AccountId = 1 }; // Less than 3 characters
+            var trade2 = new Trade { SecurityCode = "APPL", Amount = 100, AccountId = 1 }; // More than 3 characters
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade1.AccountId))
+                .ReturnsAsync(new Account { Id = trade1.AccountId });
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade2.AccountId))
+                .ReturnsAsync(new Account { Id = trade2.AccountId });
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => service.AddTradeAsync(trade1));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.AddTradeAsync(trade2));
+        }
+
+        [Fact]
         public async Task UpdateTradeAsync_UpdatesTrade()
         {
             // Arrange
-            var trade = new Trade { Id = 1, SecurityCode = "AAPL", Amount = 100, AccountId = 1 };
+            var trade = new Trade { Id = 1, SecurityCode = "APL", Amount = 100, AccountId = 1 };
             mockTradeRepository.Setup(repo => repo.UpdateTradeAsync(trade))
                 .Returns(Task.CompletedTask);
             mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade.AccountId))
@@ -87,6 +132,34 @@ namespace TradeManagementApp.Tests.Services
 
             // Assert
             mockTradeRepository.Verify(repo => repo.UpdateTradeAsync(trade), Times.Once);
+        }
+
+        [Fact]
+        public async Task UpdateTradeAsync_ThrowsException_WhenAccountNotFound()
+        {
+            // Arrange
+            var trade = new Trade { Id = 1, SecurityCode = "APL", Amount = 100, AccountId = 1 };
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade.AccountId))
+                .ReturnsAsync((Account)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => service.UpdateTradeAsync(trade));
+        }
+
+        [Fact]
+        public async Task UpdateTradeAsync_ThrowsException_WhenSecurityCodeIsInvalid()
+        {
+            // Arrange
+            var trade1 = new Trade { Id = 1, SecurityCode = "AP", Amount = 100, AccountId = 1 }; // Less than 3 characters
+            var trade2 = new Trade { Id = 1, SecurityCode = "APPL", Amount = 100, AccountId = 1 }; // More than 3 characters
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade1.AccountId))
+                .ReturnsAsync(new Account { Id = trade1.AccountId });
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade2.AccountId))
+                .ReturnsAsync(new Account { Id = trade2.AccountId });
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateTradeAsync(trade1));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateTradeAsync(trade2));
         }
 
         [Fact]
@@ -107,6 +180,33 @@ namespace TradeManagementApp.Tests.Services
 
             // Assert
             mockTradeRepository.Verify(repo => repo.DeleteTradeAsync(tradeId), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteTradeAsync_ThrowsException_WhenTradeNotFound()
+        {
+            // Arrange
+            var tradeId = 1;
+            mockTradeRepository.Setup(repo => repo.GetTradeByIdAsync(tradeId))
+                .ReturnsAsync((Trade)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteTradeAsync(tradeId));
+        }
+
+        [Fact]
+        public async Task DeleteTradeAsync_ThrowsException_WhenAccountNotFound()
+        {
+            // Arrange
+            var tradeId = 1;
+            var trade = new Trade { Id = tradeId, AccountId = 1 };
+            mockTradeRepository.Setup(repo => repo.GetTradeByIdAsync(tradeId))
+                .ReturnsAsync(trade);
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(trade.AccountId))
+                .ReturnsAsync((Account)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => service.DeleteTradeAsync(tradeId));
         }
     }
 }

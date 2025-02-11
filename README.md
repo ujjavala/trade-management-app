@@ -39,6 +39,12 @@
     dotnet test
     ```
 
+8. **Build and Run with Docker**:
+    ```sh
+    docker-compose build
+    docker-compose up
+    ```
+
 ## Overview
 
 TradeManagementApp is a sample application designed to manage trades and accounts. It consists of multiple projects:
@@ -51,6 +57,7 @@ TradeManagementApp is a sample application designed to manage trades and account
 
 - [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
 - [Visual Studio Code](https://code.visualstudio.com/) or any other IDE of your choice.
+- [Docker](https://www.docker.com/products/docker-desktop)
 
 ## Setup
 

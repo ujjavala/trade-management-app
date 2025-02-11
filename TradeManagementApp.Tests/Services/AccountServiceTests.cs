@@ -4,6 +4,7 @@
 
 namespace TradeManagementApp.Tests.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Moq;
@@ -51,6 +52,7 @@ namespace TradeManagementApp.Tests.Services
 
             // Assert
             Assert.IsType<Account>(result);
+            Assert.Equal(accountId, result.Id);
         }
 
         [Fact]
@@ -96,6 +98,79 @@ namespace TradeManagementApp.Tests.Services
 
             // Assert
             mockAccountRepository.Verify(repo => repo.DeleteAccountAsync(accountId), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAllAccountsAsync_ReturnsEmptyList_WhenNoAccountsExist()
+        {
+            // Arrange
+            mockAccountRepository.Setup(repo => repo.GetAllAccountsAsync())
+                .ReturnsAsync(new List<Account>());
+
+            // Act
+            var result = await service.GetAllAccountsAsync();
+
+            // Assert
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task GetAccountByIdAsync_ReturnsNull_WhenAccountNotFound()
+        {
+            // Arrange
+            var accountId = 1;
+            mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(accountId))
+                .ReturnsAsync((Account)null);
+
+            // Act
+            var result = await service.GetAccountByIdAsync(accountId);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task AddAccountAsync_ThrowsException_WhenFirstNameIsMissing()
+        {
+            // Arrange
+            var account = new Account { LastName = "Doe" };
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => service.AddAccountAsync(account));
+        }
+
+        [Fact]
+        public async Task AddAccountAsync_ThrowsException_WhenLastNameIsMissing()
+        {
+            // Arrange
+            var account = new Account { FirstName = "John" };
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => service.AddAccountAsync(account));
+        }
+
+        [Fact]
+        public async Task UpdateAccountAsync_ThrowsException_WhenAccountNotFound()
+        {
+            // Arrange
+            var account = new Account { Id = 1, FirstName = "John", LastName = "Doe" };
+            mockAccountRepository.Setup(repo => repo.UpdateAccountAsync(account))
+                .ThrowsAsync(new Exception("Account not found"));
+
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(() => service.UpdateAccountAsync(account));
+        }
+
+        [Fact]
+        public async Task DeleteAccountAsync_ThrowsException_WhenAccountNotFound()
+        {
+            // Arrange
+            var accountId = 1;
+            mockAccountRepository.Setup(repo => repo.DeleteAccountAsync(accountId))
+                .ThrowsAsync(new Exception("Account not found"));
+
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(() => service.DeleteAccountAsync(accountId));
         }
     }
 }

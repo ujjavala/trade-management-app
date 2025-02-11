@@ -1,94 +1,98 @@
-// <copyright file="CustomWebApplicationFactory.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-
-using System;
-using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TradeManagementApp.Models;
 using TradeManagementApp.Persistence;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using Xunit;
+using System;
+using Microsoft.Extensions.Logging;
 
-public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup>
-    where TStartup : class
+namespace TradeManagementApp.Tests.Integration
 {
-    /// <inheritdoc/>
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
-        builder.ConfigureServices(services =>
-        {
-            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DataContext>));
-            if (descriptor != null)
-            {
-                services.Remove(descriptor);
-            }
+        private readonly string _dbName;
+        private static bool _migrationsApplied = false;
 
-            services.AddDbContext<DataContext>(options =>
+        public CustomWebApplicationFactory()
+        {
+            _dbName = Guid.NewGuid().ToString() + ".db"; // Generate a unique database name
+        }
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            builder.ConfigureAppConfiguration((context, config) =>
             {
-                options.UseInMemoryDatabase("InMemoryDbForTesting");
+                // Load appsettings.json
+                config.SetBasePath(Directory.GetCurrentDirectory());
+                config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+                // Build the configuration
+                IConfigurationRoot configuration = config.Build();
+
+                // Override UseInMemoryDatabase setting
+                configuration["UseInMemoryDatabase"] = "false";
             });
 
-            var sp = services.BuildServiceProvider();
-
-            using (var scope = sp.CreateScope())
+            builder.ConfigureServices(services =>
             {
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<DataContext>();
+                // Remove the in-memory database registration
+                var descriptor = services.SingleOrDefault(
+                    d => d.ServiceType ==
+                        typeof(DbContextOptions<DataContext>));
 
-                db.Database.EnsureCreated();
+                if (descriptor != null)
+                {
+                    services.Remove(descriptor);
+                }
 
-                // Reset the database before each test
-                db.Accounts.RemoveRange(db.Accounts);
-                db.Trades.RemoveRange(db.Trades);
-                db.SaveChanges();
+                // Add SQLite database
+                services.AddDbContext<DataContext>(options =>
+                {
+                    options.UseSqlite($"Data Source={_dbName}"); // Use a unique database name
+                });
 
-                // Seed the database with test data
-                SeedData(db);
-            }
-        });
+                // Build the service provider
+                var sp = services.BuildServiceProvider();
 
-        builder.ConfigureAppConfiguration((context, config) =>
-        {
-            var jsonOptions = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.Preserve,
-                WriteIndented = true,
-            };
+                // Create a scope to obtain a reference to the database context
+                using (var scope = sp.CreateScope())
+                {
+                    var scopedServices = scope.ServiceProvider;
+                    var db = scopedServices.GetRequiredService<DataContext>();
+                    var logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
 
-            config.AddJsonFile("appsettings.json")
-                  .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true)
-                  .AddEnvironmentVariables();
-        });
-    }
+                    // Ensure the database is deleted and created and migrate it
+                    var dbPath = db.Database.GetDbConnection().DataSource;
+                    if (File.Exists(dbPath))
+                    {
+                        try
+                        {
+                            File.Delete(dbPath);
+                            logger.LogInformation($"Database file deleted: {dbPath}"); // Add logging
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.LogError(ex, $"Error deleting database file: {dbPath}");
+                            throw;
+                        }
+                    }
+                    else
+                    {
+                        logger.LogInformation($"Database file not found: {dbPath}"); // Add logging
+                    }
 
-    private void SeedData(DataContext context)
-    {
-        // Add your seed data here
-        context.Accounts.Add(new Account { Id = 1, FirstName = "John", LastName = "Doe" });
-        context.Accounts.Add(new Account { Id = 2, FirstName = "Jane", LastName = "Smith" });
+                    if (!_migrationsApplied)
+                    {
+                        db.Database.Migrate();
+                        _migrationsApplied = true;
+                    }
 
-        context.Trades.Add(new Trade { Id = 1, AccountId = 1, SecurityCode = "APL", Timestamp = DateTime.UtcNow, Amount = 100, BuyOrSell = "Buy", Status = TradeStatus.Executed });
-        context.Trades.Add(new Trade { Id = 2, AccountId = 2, SecurityCode = "GOL", Timestamp = DateTime.UtcNow, Amount = 200, BuyOrSell = "Sell", Status = TradeStatus.Executed });
-
-        for (int i = 3; i <= 52; i++)
-        {
-            context.Trades.Add(new Trade
-            {
-                Id = i,
-                AccountId = (i % 2) + 1,
-                SecurityCode = "SEC" + (i % 100).ToString("D2"),
-                Timestamp = DateTime.UtcNow,
-                Amount = i * 10m,
-                BuyOrSell = i % 2 == 0 ? "Buy" : "Sell",
-                Status = TradeStatus.Placed,
+                    // Seed the database with test data (optional)
+                    // You can add seed data here if needed
+                }
             });
         }
-
-        context.SaveChanges();
     }
 }
