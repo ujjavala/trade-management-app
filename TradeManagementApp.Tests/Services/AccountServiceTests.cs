@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using TradeManagementApp.Application.Services;
 using TradeManagementApp.Domain.Models;
@@ -14,13 +14,13 @@ namespace TradeManagementApp.Tests.Services
     {
         private readonly IAccountService _service;
         private readonly Mock<IAccountRepository> _mockAccountRepository;
-        private readonly Mock<IMemoryCache> _mockMemoryCache;
+        private readonly LruCache<string, Account> _lruCache;
 
         public AccountServiceTests()
         {
             _mockAccountRepository = new Mock<IAccountRepository>();
-            _mockMemoryCache = new Mock<IMemoryCache>(); // Initialize mockMemoryCache
-            _service = new AccountService(_mockAccountRepository.Object, _mockMemoryCache.Object);
+            _lruCache = new LruCache<string, Account>(capacity: 100);
+            _service = new AccountService(_mockAccountRepository.Object, _lruCache);
         }
 
         [Fact]
@@ -159,7 +159,7 @@ namespace TradeManagementApp.Tests.Services
             await Assert.ThrowsAsync<Exception>(() => _service.DeleteAccountAsync(1));
         }
 
-        [Fact(Skip = "Fix this test")]
+        [Fact]
         public async Task GetAccountByIdWithCacheAsync_AccountInCache_ReturnsCachedAccount()
         {
             // Arrange
@@ -167,13 +167,7 @@ namespace TradeManagementApp.Tests.Services
             var cachedAccount = new Account { Id = accountId, FirstName = "Cached", LastName = "Account" };
             var cacheKey = $"account-{accountId}";
 
-            object cachedObject;
-            _mockMemoryCache.Setup(cache => cache.TryGetValue(cacheKey, out cachedObject))
-                .Returns(true)
-                .Callback((string key, out object value) =>
-                {
-                    value = cachedAccount;
-                });
+            _lruCache.Set(cacheKey, cachedAccount);
 
             // Act
             var result = await _service.GetAccountByIdWithCacheAsync(accountId);
@@ -191,9 +185,7 @@ namespace TradeManagementApp.Tests.Services
             var repositoryAccount = new Account { Id = accountId, FirstName = "Repository", LastName = "Account" };
             var cacheKey = $"account-{accountId}";
 
-            _mockMemoryCache.Setup(cache => cache.TryGetValue(cacheKey, out It.Ref<object>.IsAny)).Returns(false);
             _mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(accountId)).ReturnsAsync(repositoryAccount);
-            _mockMemoryCache.Setup(cache => cache.CreateEntry(cacheKey)).Returns(Mock.Of<ICacheEntry>());
 
             // Act
             var result = await _service.GetAccountByIdWithCacheAsync(accountId);
@@ -201,7 +193,7 @@ namespace TradeManagementApp.Tests.Services
             // Assert
             Assert.Equal(repositoryAccount, result);
             _mockAccountRepository.Verify(repo => repo.GetAccountByIdAsync(accountId), Times.Once); // Should hit the repository
-            _mockMemoryCache.Verify(cache => cache.CreateEntry(cacheKey), Times.Once); // Should add to cache
+            Assert.Equal(repositoryAccount, _lruCache.Get(cacheKey)); // Should add to cache
         }
 
         [Fact]
@@ -211,7 +203,6 @@ namespace TradeManagementApp.Tests.Services
             var accountId = 1;
             var cacheKey = $"account-{accountId}";
 
-            _mockMemoryCache.Setup(cache => cache.TryGetValue(cacheKey, out It.Ref<object>.IsAny)).Returns(false);
             _mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(accountId)).ReturnsAsync((Account)null);
 
             // Act
@@ -220,10 +211,10 @@ namespace TradeManagementApp.Tests.Services
             // Assert
             Assert.Null(result);
             _mockAccountRepository.Verify(repo => repo.GetAccountByIdAsync(accountId), Times.Once); // Should hit the repository
-            _mockMemoryCache.Verify(cache => cache.CreateEntry(cacheKey), Times.Never); // Should not add to cache
+            Assert.Null(_lruCache.Get(cacheKey)); // Should not add to cache
         }
 
-        [Fact(Skip = "Fix this test")]
+        [Fact]
         public async Task GetAccountByIdWithCacheAsync_CacheThrowsException_ReturnsAccountFromRepository()
         {
             // Arrange
@@ -231,7 +222,6 @@ namespace TradeManagementApp.Tests.Services
             var repositoryAccount = new Account { Id = accountId, FirstName = "Repository", LastName = "Account" };
             var cacheKey = $"account-{accountId}";
 
-            _mockMemoryCache.Setup(cache => cache.TryGetValue(cacheKey, out It.Ref<object>.IsAny)).Throws(new Exception("Cache unavailable"));
             _mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(accountId)).ReturnsAsync(repositoryAccount);
 
             // Act
@@ -249,7 +239,6 @@ namespace TradeManagementApp.Tests.Services
             var accountId = 1;
             var cacheKey = $"account-{accountId}";
 
-            _mockMemoryCache.Setup(cache => cache.TryGetValue(cacheKey, out It.Ref<object>.IsAny)).Returns(false);
             _mockAccountRepository.Setup(repo => repo.GetAccountByIdAsync(accountId)).ThrowsAsync(new Exception("Repository unavailable"));
 
             // Act & Assert

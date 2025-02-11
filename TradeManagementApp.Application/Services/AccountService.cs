@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TradeManagementApp.Domain.Models;
 using TradeManagementApp.Domain.Repositories;
-using Microsoft.Extensions.Caching.Memory; // Add this using directive
-
+using Microsoft.Extensions.Caching.Memory;
 
 namespace TradeManagementApp.Application.Services
 {
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly IMemoryCache _memoryCache;
+        private readonly LruCache<string, Account> _lruCache;
 
-        public AccountService(IAccountRepository accountRepository, IMemoryCache memoryCache)
+        public AccountService(IAccountRepository accountRepository, LruCache<string, Account> lruCache)
         {
             _accountRepository = accountRepository;
-            _memoryCache = memoryCache;
+            _lruCache = lruCache;
         }
 
         public async Task<IEnumerable<Account>> GetAllAccountsAsync()
@@ -33,7 +32,8 @@ namespace TradeManagementApp.Application.Services
         {
             string cacheKey = $"account-{accountId}";
 
-            if (_memoryCache.TryGetValue(cacheKey, out Account account))
+            var account = _lruCache.Get(cacheKey);
+            if (account != null)
             {
                 return account; // Return cached account
             }
@@ -42,7 +42,7 @@ namespace TradeManagementApp.Application.Services
 
             if (account != null)
             {
-                _memoryCache.Set(cacheKey, account, TimeSpan.FromMinutes(10)); // Cache for 10 minutes
+                _lruCache.Set(cacheKey, account);
             }
 
             return account;

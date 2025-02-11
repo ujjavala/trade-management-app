@@ -7,9 +7,9 @@ using Microsoft.OpenApi.Models;
 using TradeManagementApp.Persistence;
 using Microsoft.EntityFrameworkCore;
 using TradeManagementApp.Domain.Repositories;
+using TradeManagementApp.Domain.Models;
 using TradeManagementApp.Persistence.Repositories;
 using TradeManagementApp.Application.Services;
-using Microsoft.Extensions.Caching.Memory; // Add this
 
 namespace TradeManagementApp.API
 {
@@ -25,16 +25,11 @@ namespace TradeManagementApp.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TradeManagementApp.API", Version = "v1" });
-            });
 
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlite(Configuration.GetConnectionString(Constants.DefaultConnectionStringName));
             });
 
             services.AddScoped<ITradeService, TradeService>();
@@ -42,7 +37,13 @@ namespace TradeManagementApp.API
             services.AddScoped<ITradeRepository, TradeRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
 
-            services.AddMemoryCache(); // Add this
+            // Register LruCache<string, Account> as a singleton
+            services.AddSingleton(new LruCache<string, Account>(capacity: Constants.CacheCapacity));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(Constants.SwaggerVersion, new OpenApiInfo { Title = Constants.SwaggerTitle, Version = Constants.SwaggerVersion });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +53,7 @@ namespace TradeManagementApp.API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TradeManagementApp.API v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint(Constants.SwaggerEndpointUrl, $"{Constants.SwaggerTitle} {Constants.SwaggerVersion}"));
             }
 
             app.UseHttpsRedirection();

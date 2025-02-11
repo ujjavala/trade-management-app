@@ -283,3 +283,5 @@ The following tasks are still pending:
 -   Fix Integration Tests: The integration tests that are failing due to platform dependencies need to be reviewed and fixed to ensure they are working correctly with the new architecture.
 -   Add Authentication Layer: Implement an authentication layer to secure the API endpoints.
 -   For achieving scalability and efficiency on load balancer front for Cache, Redis can be used instead of in-memory caching.
+-   Implement ORM for handling complex DTO models: Use an Object-Relational Mapping (ORM) tool like Entity Framework Core to manage complex Data Transfer Objects (DTOs) and their relationships. This will simplify data access and manipulation, and ensure consistency across the application.
+- Constants file
