@@ -144,6 +144,7 @@ The API provides the following endpoints:
 -   POST /api/accounts: Creates a new account.
 -   PUT /api/accounts/{id}: Updates an existing account by ID.
 -   DELETE /api/accounts/{id}: Deletes an account by ID.
+-   GET /api/accounts/search?id={id}&lastName={lastName}: Searches for accounts by ID and/or last name.
 
 #### Trades
 
@@ -158,7 +159,7 @@ The API provides the following endpoints:
 #### TradeManagementApp.API
 
 -   **Controllers**: Contains the API controllers that handle HTTP requests and return responses. The controllers orchestrate the application flow by calling the appropriate methods in the Application layer.
-    -   **AccountsController**: Manages account-related operations.
+    -   **AccountsController**: Manages account-related operations, including searching for accounts.
     -   **TradesController**: Manages trade-related operations.
 -   **Services**: *[Optional]* In more complex scenarios, this layer might contain API-specific service implementations for tasks like request validation, data transformation (using DTOs), and handling API-specific concerns. In this simplified example, the controllers directly interact with the Application layer services.
 
@@ -169,6 +170,7 @@ The API provides the following endpoints:
 #### TradeManagementApp.Domain
 
 -   **Models**: Defines the core domain entities (e.g., `Account`, `Trade`, `TradeStatus`) that represent the business concepts.
+    -   `TradeStatus`: An enum representing the status of a trade (Placed, Executed, Expired). Serialized as strings in the API.
 -   **Repositories**: Defines the repository interfaces (e.g., `IAccountRepository`, `ITradeRepository`) that abstract the data access logic.
 
 #### TradeManagementApp.Persistence
@@ -275,8 +277,9 @@ The `docker-compose.yml` file defines the services, networks, and volumes used b
 -   If you encounter any issues, please check the error messages and ensure that all dependencies are correctly installed.
 
 ### TODO
+
 The following tasks are still pending:
 
-- Fix Integration Tests: The integration tests need to be reviewed and fixed to ensure they are working correctly with the new architecture.
-
-- Add Authentication Layer: Implement an authentication layer to secure the API endpoints.
+-   Fix Integration Tests: The integration tests that are failing due to platform dependencies need to be reviewed and fixed to ensure they are working correctly with the new architecture.
+-   Add Authentication Layer: Implement an authentication layer to secure the API endpoints.
+-   For achieving scalability and efficiency on load balancer front for Cache, Redis can be used instead of in-memory caching.
