@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; // Add this for .ToListAsync()
-using System;
 using System.Collections.Generic;
-using System.Linq; // Add this for LINQ
+using System.Linq;
 using System.Threading.Tasks;
 using TradeManagementApp.Application.Services;
 using TradeManagementApp.Domain.Models;
@@ -58,9 +56,10 @@ namespace TradeManagementApp.API.Controllers
 
             var accounts = await _accountService.SearchAccountsAsync(id, lastName);
 
+            // Return an empty list if no accounts are found
             if (accounts == null || !accounts.Any())
             {
-                return NotFound();
+                return Ok(new List<Account>());
             }
 
             return Ok(accounts);
@@ -69,23 +68,35 @@ namespace TradeManagementApp.API.Controllers
         // PUT: api/Accounts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAccount(int id, Account account)
+        public async Task<ActionResult<Account>> PutAccount(int id, Account account)
         {
+            // Use the Id from the URL if no Id is supplied in the body
+            if (account.Id == 0)
+            {
+                account.Id = id;
+            }
+
             if (id != account.Id)
             {
-                return BadRequest();
+                return BadRequest("The ID in the URL does not match the ID in the body of the request.");
             }
 
             try
             {
                 await _accountService.UpdateAccountAsync(account);
             }
-            catch (System.Exception)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            return NoContent();
+            // Return the updated account
+            var updatedAccount = await _accountService.GetAccountByIdAsync(id);
+            return Ok(updatedAccount);
         }
 
         // POST: api/Accounts
@@ -97,9 +108,9 @@ namespace TradeManagementApp.API.Controllers
             {
                 await _accountService.AddAccountAsync(account);
             }
-            catch (System.ArgumentException)
+            catch (ArgumentException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
 
             return CreatedAtAction("GetAccount", new { id = account.Id }, account);
@@ -113,9 +124,13 @@ namespace TradeManagementApp.API.Controllers
             {
                 await _accountService.DeleteAccountAsync(id);
             }
-            catch (System.Exception)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
 
             return NoContent();

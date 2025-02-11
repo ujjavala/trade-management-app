@@ -1,58 +1,100 @@
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TradeManagementApp.Domain.Models;
-using TradeManagementApp.Domain.Repositories;
+using TradeManagementApp.Persistence;
+using TradeManagementApp.Persistence.Repositories;
+using Xunit;
 
-namespace TradeManagementApp.Persistence.Repositories
+namespace TradeManagementApp.Tests.Repositories
 {
-    public class TradeRepository : ITradeRepository
+    public class TradeRepositoryTests : IClassFixture<DatabaseFixture>
     {
-        private readonly DataContext _context;
+        private readonly DatabaseFixture _fixture;
 
-        public TradeRepository(DataContext context)
+        public TradeRepositoryTests(DatabaseFixture fixture)
         {
-            _context = context;
+            _fixture = fixture;
         }
 
-        public async Task<IEnumerable<Trade>> GetAllTradesAsync()
+        private (TradeRepository repository, DataContext context) CreateRepository()
         {
-            return await _context.Trades.ToListAsync();
+            var context = _fixture.CreateContext();
+            var repository = new TradeRepository(context);
+            return (repository, context);
         }
 
-        public async Task<Trade> GetTradeByIdAsync(int id)
+
+        [Fact]
+        public async Task GetTradeByIdAsync_WithValidId_ReturnsTrade()
         {
-            return await _context.Trades.FindAsync(id);
+            // Arrange
+            var (repository, context) = CreateRepository();
+
+            // Act
+            var result = await repository.GetTradeByIdAsync(1);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(1, result.Id);
         }
 
-        public async Task AddTradeAsync(Trade trade)
+        [Fact]
+        public async Task GetTradeByIdAsync_WithInvalidId_ReturnsNull()
         {
-            await _context.Trades.AddAsync(trade);
-            await _context.SaveChangesAsync();
+            // Arrange
+            var (repository, context) = CreateRepository();
+
+            // Act
+            var result = await repository.GetTradeByIdAsync(99);
+
+            // Assert
+            Assert.Null(result);
         }
 
-        public async Task UpdateTradeAsync(Trade trade)
+        [Fact]
+        public async Task UpdateTradeAsync_InvalidTrade_ThrowsException()
         {
-            var existingTrade = await _context.Trades.FindAsync(trade.Id);
-            if (existingTrade != null)
-            {
-                _context.Entry(existingTrade).CurrentValues.SetValues(trade);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                throw new DbUpdateConcurrencyException("Attempted to update or delete an entity that does not exist in the store.");
-            }
+            // Arrange
+            var (repository, context) = CreateRepository();
+            var trade = new Trade { Id = 99, Status = TradeStatus.Executed, BuyOrSell = "Sell", SecurityCode = "AAPL" };
+
+            // Act & Assert
+            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => repository.UpdateTradeAsync(trade));
         }
 
-        public async Task DeleteTradeAsync(int id)
+        [Fact]
+        public async Task DeleteTradeAsync_ValidId_DeletesTrade()
         {
-            var trade = await _context.Trades.FindAsync(id);
-            if (trade != null)
-            {
-                _context.Trades.Remove(trade);
-                await _context.SaveChangesAsync();
-            }
+            // Arrange
+            var (repository, context) = CreateRepository();
+
+            // Act
+            await repository.DeleteTradeAsync(1);
+            await context.SaveChangesAsync();
+
+            var result = await repository.GetTradeByIdAsync(1);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task DeleteTradeAsync_InvalidId_DoesNothing()
+        {
+            // Arrange
+            var (repository, context) = CreateRepository();
+
+            // Act
+            await repository.DeleteTradeAsync(99);
+            await context.SaveChangesAsync();
+
+            var result = await repository.GetTradeByIdAsync(99);
+
+            // Assert
+            Assert.Null(result);
         }
     }
 }

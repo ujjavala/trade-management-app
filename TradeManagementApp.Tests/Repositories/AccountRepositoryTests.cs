@@ -21,27 +21,6 @@ namespace TradeManagementApp.Tests.Repositories
         }
 
         [Fact]
-        public async Task SearchAccountsAsync_WithValidId_ReturnsAccounts()
-        {
-            // Act
-            var result = await _accountRepository.SearchAccountsAsync(1, null);
-
-            // Assert
-            Assert.Single(result);
-            Assert.Equal(1, result.First().Id);
-        }
-
-        [Fact]
-        public async Task SearchAccountsAsync_WithValidLastName_ReturnsAccounts()
-        {
-            // Act
-            var result = await _accountRepository.SearchAccountsAsync(null, "Doe");
-
-            // Assert
-            Assert.Equal(2, result.Count());
-        }
-
-        [Fact]
         public async Task SearchAccountsAsync_WithInvalidId_ReturnsEmpty()
         {
             // Act

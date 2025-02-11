@@ -142,7 +142,7 @@ The API provides the following endpoints:
 -   GET /api/accounts: Retrieves all accounts.
 -   GET /api/accounts/{id}: Retrieves a specific account by ID.
 -   POST /api/accounts: Creates a new account.
--   PUT /api/accounts/{id}: Updates an existing account by ID.
+-   PUT /api/accounts/{id}: Updates an existing account by ID. If no ID is supplied in the body, the ID from the URL is used. If the IDs do not match, a `BadRequest` is returned.
 -   DELETE /api/accounts/{id}: Deletes an account by ID.
 -   GET /api/accounts/search?id={id}&lastName={lastName}: Searches for accounts by ID and/or last name.
 
@@ -151,7 +151,7 @@ The API provides the following endpoints:
 -   GET /api/trades: Retrieves all trades.
 -   GET /api/trades/{id}: Retrieves a specific trade by ID.
 -   POST /api/trades: Creates a new trade.
--   PUT /api/trades/{id}: Updates an existing trade by ID.
+-   PUT /api/trades/{id}: Updates an existing trade by ID. If no ID is supplied in the body, the ID from the URL is used. If the IDs do not match, a `BadRequest` is returned.
 -   DELETE /api/trades/{id}: Deletes a trade by ID.
 
 ### Code Explanation

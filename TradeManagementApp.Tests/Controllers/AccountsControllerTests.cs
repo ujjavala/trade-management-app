@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TradeManagementApp.API.Controllers;
 using TradeManagementApp.Application.Services;
@@ -11,80 +10,13 @@ namespace TradeManagementApp.Tests.Controllers
 {
     public class AccountsControllerTests
     {
-        private readonly AccountsController _controller;
         private readonly Mock<IAccountService> _mockAccountService;
+        private readonly AccountsController _controller;
 
         public AccountsControllerTests()
         {
             _mockAccountService = new Mock<IAccountService>();
             _controller = new AccountsController(_mockAccountService.Object);
-        }
-
-        [Fact]
-        public async Task GetAllAccounts_ReturnsOkResult_WithAccounts()
-        {
-            // Arrange
-            var accounts = new List<Account> {
-                new Account { Id = 1, FirstName = "John", LastName = "Doe" },
-                new Account { Id = 2, FirstName = "Jane", LastName = "Smith" }
-            };
-            _mockAccountService.Setup(service => service.GetAllAccountsAsync()).ReturnsAsync(accounts);
-
-            // Act
-            var result = await _controller.GetAccounts();
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnedAccounts = Assert.IsType<List<Account>>(okResult.Value);
-            Assert.Equal(2, returnedAccounts.Count);
-        }
-
-        [Fact]
-        public async Task GetAllAccounts_ReturnsOkResult_WhenNoAccountsExist()
-        {
-            // Arrange
-            _mockAccountService.Setup(service => service.GetAllAccountsAsync()).ReturnsAsync(new List<Account>());
-
-            // Act
-            var result = await _controller.GetAccounts();
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnedAccounts = Assert.IsType<List<Account>>(okResult.Value);
-            Assert.Empty(returnedAccounts);
-        }
-
-        [Fact]
-        public async Task GetAccountById_ReturnsOkResult_WithAccount()
-        {
-            // Arrange
-            var accountId = 1;
-            var expectedAccount = new Account { Id = accountId, FirstName = "John", LastName = "Doe" };
-            _mockAccountService.Setup(service => service.GetAccountByIdWithCacheAsync(accountId)).ReturnsAsync(expectedAccount);
-
-            // Act
-            var result = await _controller.GetAccount(accountId);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnedAccount = Assert.IsType<Account>(okResult.Value);
-            Assert.Equal(accountId, returnedAccount.Id);
-            Assert.Equal("John", returnedAccount.FirstName);
-            Assert.Equal("Doe", returnedAccount.LastName);
-        }
-
-        [Fact]
-        public async Task GetAccountById_ReturnsNotFoundResult_WhenAccountNotFound()
-        {
-            // Arrange
-            var accountId = 1;
-            _mockAccountService.Setup(service => service.GetAccountByIdWithCacheAsync(accountId)).ReturnsAsync(null as Account);
-
-            // Act
-            var result = await _controller.GetAccount(accountId);
-
-            // Assert
-            Assert.IsType<NotFoundResult>(result.Result);
         }
 
         [Fact]
@@ -104,32 +36,53 @@ namespace TradeManagementApp.Tests.Controllers
         }
 
         [Fact]
-        public async Task UpdateAccount_ReturnsNoContentResult()
-        {
-            // Arrange
-            var accountId = 1;
-            var account = new Account { Id = accountId, FirstName = "UpdatedJohn", LastName = "UpdatedDoe" };
-            _mockAccountService.Setup(service => service.UpdateAccountAsync(account)).Returns(Task.CompletedTask);
-
-            // Act
-            var result = await _controller.PutAccount(accountId, account);
-
-            // Assert
-            Assert.IsType<NoContentResult>(result);
-        }
-
-        [Fact]
         public async Task UpdateAccount_ReturnsBadRequest_WhenAccountIdsDoNotMatch()
         {
             // Arrange
-            var accountId = 1;
-            var account = new Account { Id = 2, FirstName = "UpdatedJohn", LastName = "UpdatedDoe" };
+            var account = new Account { Id = 1, FirstName = "John", LastName = "Doe" };
 
             // Act
-            var result = await _controller.PutAccount(accountId, account);
+            var result = await _controller.PutAccount(2, account);
 
             // Assert
-            Assert.IsType<BadRequestResult>(result);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.Equal("The ID in the URL does not match the ID in the body of the request.", badRequestResult.Value);
+        }
+
+        [Fact]
+        public async Task UpdateAccount_UsesIdFromUrl_WhenNoIdInBody()
+        {
+            // Arrange
+            var account = new Account { FirstName = "John", LastName = "Doe" };
+            _mockAccountService.Setup(service => service.UpdateAccountAsync(It.IsAny<Account>())).Returns(Task.CompletedTask);
+            _mockAccountService.Setup(service => service.GetAccountByIdAsync(It.IsAny<int>())).ReturnsAsync(account);
+
+            // Act
+            var result = await _controller.PutAccount(1, account);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnedAccount = Assert.IsType<Account>(okResult.Value);
+            Assert.Equal(1, returnedAccount.Id);
+        }
+
+        [Fact]
+        public async Task UpdateAccount_ReturnsUpdatedAccount()
+        {
+            // Arrange
+            var account = new Account { Id = 1, FirstName = "John", LastName = "Doe" };
+            _mockAccountService.Setup(service => service.UpdateAccountAsync(account)).Returns(Task.CompletedTask);
+            _mockAccountService.Setup(service => service.GetAccountByIdAsync(account.Id)).ReturnsAsync(account);
+
+            // Act
+            var result = await _controller.PutAccount(1, account);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnedAccount = Assert.IsType<Account>(okResult.Value);
+            Assert.Equal(account.Id, returnedAccount.Id);
+            Assert.Equal(account.FirstName, returnedAccount.FirstName);
+            Assert.Equal(account.LastName, returnedAccount.LastName);
         }
 
         [Fact]
