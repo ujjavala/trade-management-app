@@ -1,75 +1,106 @@
-// <copyright file="AccountsControllerTests.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TradeManagementApp.API.Controllers;
+using TradeManagementApp.Application.Services;
+using TradeManagementApp.Domain.Models;
+using Xunit;
 
 namespace TradeManagementApp.Tests.Controllers
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
-    using Moq;
-    using TradeManagementApp.API.Controllers;
-    using TradeManagementApp.Application.Services;
-    using TradeManagementApp.Domain.Models;
-    using Xunit;
-
     public class AccountsControllerTests
     {
-        private readonly AccountsController controller;
-        private readonly Mock<IAccountService> mockAccountService;
+        private readonly AccountsController _controller;
+        private readonly Mock<IAccountService> _mockAccountService;
 
         public AccountsControllerTests()
         {
-            mockAccountService = new Mock<IAccountService>();
-            controller = new AccountsController(mockAccountService.Object);
+            _mockAccountService = new Mock<IAccountService>();
+            _controller = new AccountsController(_mockAccountService.Object);
         }
 
         [Fact]
-        public async Task GetAllAccounts_ReturnsOkResult()
+        public async Task GetAllAccounts_ReturnsOkResult_WithAccounts()
         {
             // Arrange
-            mockAccountService.Setup(service => service.GetAllAccountsAsync())
-                .ReturnsAsync(new List<Account>());
+            var accounts = new List<Account> {
+                new Account { Id = 1, FirstName = "John", LastName = "Doe" },
+                new Account { Id = 2, FirstName = "Jane", LastName = "Smith" }
+            };
+            _mockAccountService.Setup(service => service.GetAllAccountsAsync()).ReturnsAsync(accounts);
 
             // Act
-            var result = await controller.GetAllAccounts();
+            var result = await _controller.GetAccounts();
 
             // Assert
-            var okResult = Assert.IsType<ActionResult<IEnumerable<Account>>>(result);
-            Assert.IsType<OkObjectResult>(okResult.Result);
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnedAccounts = Assert.IsType<List<Account>>(okResult.Value);
+            Assert.Equal(2, returnedAccounts.Count);
         }
 
         [Fact]
-        public async Task GetAccountById_ReturnsOkResult()
+        public async Task GetAllAccounts_ReturnsOkResult_WhenNoAccountsExist()
+        {
+            // Arrange
+            _mockAccountService.Setup(service => service.GetAllAccountsAsync()).ReturnsAsync(new List<Account>());
+
+            // Act
+            var result = await _controller.GetAccounts();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnedAccounts = Assert.IsType<List<Account>>(okResult.Value);
+            Assert.Empty(returnedAccounts);
+        }
+
+        [Fact]
+        public async Task GetAccountById_ReturnsOkResult_WithAccount()
         {
             // Arrange
             var accountId = 1;
-            var account = new Account { Id = accountId, FirstName = "John", LastName = "Doe" };
-            mockAccountService.Setup(service => service.GetAccountByIdAsync(accountId))
-                .ReturnsAsync(account);
+            var expectedAccount = new Account { Id = accountId, FirstName = "John", LastName = "Doe" };
+            _mockAccountService.Setup(service => service.GetAccountByIdWithCacheAsync(accountId)).ReturnsAsync(expectedAccount);
 
             // Act
-            var result = await controller.GetAccountById(accountId);
+            var result = await _controller.GetAccount(accountId);
 
             // Assert
-            var okResult = Assert.IsType<ActionResult<Account>>(result);
-            Assert.IsType<OkObjectResult>(okResult.Result);
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnedAccount = Assert.IsType<Account>(okResult.Value);
+            Assert.Equal(accountId, returnedAccount.Id);
+            Assert.Equal("John", returnedAccount.FirstName);
+            Assert.Equal("Doe", returnedAccount.LastName);
         }
 
         [Fact]
-        public async Task CreateAccount_ReturnsCreatedAtActionResult()
+        public async Task GetAccountById_ReturnsNotFoundResult_WhenAccountNotFound()
+        {
+            // Arrange
+            var accountId = 1;
+            _mockAccountService.Setup(service => service.GetAccountByIdWithCacheAsync(accountId)).ReturnsAsync(null as Account);
+
+            // Act
+            var result = await _controller.GetAccount(accountId);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task CreateAccount_ReturnsCreatedAtActionResult_WithAccount()
         {
             // Arrange
             var account = new Account { FirstName = "John", LastName = "Doe" };
-            mockAccountService.Setup(service => service.AddAccountAsync(account))
-                .Returns(Task.CompletedTask);
+            _mockAccountService.Setup(service => service.AddAccountAsync(account)).Returns(Task.CompletedTask);
+            _mockAccountService.Setup(service => service.GetAccountByIdAsync(It.IsAny<int>())).ReturnsAsync(account);
 
             // Act
-            var result = await controller.CreateAccount(account);
+            var result = await _controller.PostAccount(account);
 
             // Assert
-            var createdResult = Assert.IsType<ActionResult<Account>>(result);
-            Assert.IsType<CreatedAtActionResult>(createdResult.Result);
+            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
+            Assert.Equal(account, createdAtActionResult.Value);
         }
 
         [Fact]
@@ -77,15 +108,28 @@ namespace TradeManagementApp.Tests.Controllers
         {
             // Arrange
             var accountId = 1;
-            var account = new Account { Id = accountId, FirstName = "John", LastName = "Doe" };
-            mockAccountService.Setup(service => service.UpdateAccountAsync(account))
-                .Returns(Task.CompletedTask);
+            var account = new Account { Id = accountId, FirstName = "UpdatedJohn", LastName = "UpdatedDoe" };
+            _mockAccountService.Setup(service => service.UpdateAccountAsync(account)).Returns(Task.CompletedTask);
 
             // Act
-            var result = await controller.UpdateAccount(accountId, account);
+            var result = await _controller.PutAccount(accountId, account);
 
             // Assert
             Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async Task UpdateAccount_ReturnsBadRequest_WhenAccountIdsDoNotMatch()
+        {
+            // Arrange
+            var accountId = 1;
+            var account = new Account { Id = 2, FirstName = "UpdatedJohn", LastName = "UpdatedDoe" };
+
+            // Act
+            var result = await _controller.PutAccount(accountId, account);
+
+            // Assert
+            Assert.IsType<BadRequestResult>(result);
         }
 
         [Fact]
@@ -93,11 +137,10 @@ namespace TradeManagementApp.Tests.Controllers
         {
             // Arrange
             var accountId = 1;
-            mockAccountService.Setup(service => service.DeleteAccountAsync(accountId))
-                .Returns(Task.CompletedTask);
+            _mockAccountService.Setup(service => service.DeleteAccountAsync(accountId)).Returns(Task.CompletedTask);
 
             // Act
-            var result = await controller.DeleteAccount(accountId);
+            var result = await _controller.DeleteAccount(accountId);
 
             // Assert
             Assert.IsType<NoContentResult>(result);

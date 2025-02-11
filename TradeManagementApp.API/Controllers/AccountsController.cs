@@ -1,37 +1,35 @@
-// <copyright file="AccountsController.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TradeManagementApp.Application.Services;
+using TradeManagementApp.Domain.Models;
 
 namespace TradeManagementApp.API.Controllers
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
-    using TradeManagementApp.Application.Services;
-    using TradeManagementApp.Domain.Models;
-
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class AccountsController : ControllerBase
     {
-        private readonly IAccountService accountService;
+        private readonly IAccountService _accountService;
 
         public AccountsController(IAccountService accountService)
         {
-            this.accountService = accountService;
+            _accountService = accountService;
         }
 
+        // GET: api/Accounts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Account>>> GetAllAccounts()
+        public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
-            var accounts = await accountService.GetAllAccountsAsync();
-            return Ok(accounts);
+            return Ok(await _accountService.GetAllAccountsAsync());
         }
 
+        // GET: api/Accounts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Account>> GetAccountById(int id)
+        public async Task<ActionResult<Account>> GetAccount(int id)
         {
-            var account = await accountService.GetAccountByIdAsync(id);
+            var account = await _accountService.GetAccountByIdWithCacheAsync(id); // Use the cached method
+
             if (account == null)
             {
                 return NotFound();
@@ -40,29 +38,58 @@ namespace TradeManagementApp.API.Controllers
             return Ok(account);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Account>> CreateAccount(Account account)
-        {
-            await accountService.AddAccountAsync(account);
-            return CreatedAtAction(nameof(GetAccountById), new { id = account.Id }, account);
-        }
-
+        // PUT: api/Accounts/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAccount(int id, Account account)
+        public async Task<IActionResult> PutAccount(int id, Account account)
         {
             if (id != account.Id)
             {
                 return BadRequest();
             }
 
-            await accountService.UpdateAccountAsync(account);
+            try
+            {
+                await _accountService.UpdateAccountAsync(account);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+
             return NoContent();
         }
 
+        // POST: api/Accounts
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Account>> PostAccount(Account account)
+        {
+            try
+            {
+                await _accountService.AddAccountAsync(account);
+            }
+            catch (System.ArgumentException)
+            {
+                return BadRequest();
+            }
+
+            return CreatedAtAction("GetAccount", new { id = account.Id }, account);
+        }
+
+        // DELETE: api/Accounts/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAccount(int id)
         {
-            await accountService.DeleteAccountAsync(id);
+            try
+            {
+                await _accountService.DeleteAccountAsync(id);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+
             return NoContent();
         }
     }

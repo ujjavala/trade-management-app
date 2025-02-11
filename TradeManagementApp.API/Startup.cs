@@ -1,26 +1,18 @@
-// <copyright file="Startup.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using TradeManagementApp.Persistence;
+using Microsoft.EntityFrameworkCore;
+using TradeManagementApp.Domain.Repositories;
+using TradeManagementApp.Persistence.Repositories;
+using TradeManagementApp.Application.Services;
+using Microsoft.Extensions.Caching.Memory; // Add this
 
 namespace TradeManagementApp.API
 {
-    using System;
-    using System.IO;
-    using System.Reflection;
-    using System.Text.Json.Serialization;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using Microsoft.OpenApi.Models;
-    using TradeManagementApp.Application.Services;
-    using TradeManagementApp.Domain.Repositories;
-    using TradeManagementApp.Persistence;
-    using TradeManagementApp.Persistence.Repositories;
-
-
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -30,74 +22,49 @@ namespace TradeManagementApp.API
 
         public IConfiguration Configuration { get; }
 
+        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-            });
 
-            // Use in-memory database for testing
-            if (Configuration.GetValue<bool>("UseInMemoryDatabase"))
-            {
-                services.AddDbContext<DataContext>(options =>
-                    options.UseInMemoryDatabase("InMemoryDbForTesting"));
-            }
-            else
-            {
-                services.AddDbContext<DataContext>(options =>
-                    options.UseSqlite("Data Source=trade_management.db"));
-            }
-
-            services.AddScoped<ITradeRepository, TradeRepository>();
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<ITradeService, TradeService>();
-            services.AddScoped<IAccountService, AccountService>();
-
-            // Register the Swagger generator, defining one or more Swagger documents
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TradeManagementApp API", Version = "v1" });
-
-                // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TradeManagementApp.API", Version = "v1" });
             });
+
+            services.AddDbContext<DataContext>(options =>
+            {
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            services.AddScoped<ITradeService, TradeService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ITradeRepository, TradeRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+
+            services.AddMemoryCache(); // Add this
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TradeManagementApp.API v1"));
             }
 
             app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseAuthorization();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TradeManagementApp API V1");
-                c.RoutePrefix = string.Empty;
-            });
+            app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
-            // Apply migrations if not using in-memory database
-            if (!Configuration.GetValue<bool>("UseInMemoryDatabase"))
-            {
-                using (var serviceScope = serviceProvider.CreateScope())
-                {
-                    var context = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
-                    context.Database.Migrate();
-                }
-            }
         }
     }
 }
