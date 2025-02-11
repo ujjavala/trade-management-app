@@ -9,8 +9,8 @@ namespace TradeManagementApp.Tests.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Moq;
     using TradeManagementApp.API.Controllers;
-    using TradeManagementApp.API.Services;
-    using TradeManagementApp.Models;
+    using TradeManagementApp.Application.Services;
+    using TradeManagementApp.Domain.Models;
     using Xunit;
 
     public class AccountsControllerTests

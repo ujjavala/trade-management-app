@@ -2,17 +2,16 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace TradeManagementApp.API.Services
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using TradeManagementApp.Models;
-    using TradeManagementApp.Persistence.Repositories;
-    using System.Collections.Generic;
-    using System.Collections;
-    using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TradeManagementApp.Domain.Models;
+using TradeManagementApp.Domain.Repositories;
+using System.Collections;
+using System.Linq;
 
+namespace TradeManagementApp.Application.Services
+{
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;

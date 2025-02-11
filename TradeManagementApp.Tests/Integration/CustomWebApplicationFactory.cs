@@ -1,16 +1,21 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using TradeManagementApp.Persistence;
-using Microsoft.Extensions.Configuration;
-using System.IO;
-using Xunit;
-using System;
-using Microsoft.Extensions.Logging;
+// <copyright file="CustomWebApplicationFactory.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace TradeManagementApp.Tests.Integration
 {
+    using System;
+    using System.IO;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+    using TradeManagementApp.Persistence;
+    using Xunit;
+
+
     public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
         private readonly string _dbName;

@@ -7,8 +7,8 @@ namespace TradeManagementApp.API.Controllers
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using TradeManagementApp.API.Services;
-    using TradeManagementApp.Models;
+    using TradeManagementApp.Application.Services;
+    using TradeManagementApp.Domain.Models;
 
     [ApiController]
     [Route("api/[controller]")]

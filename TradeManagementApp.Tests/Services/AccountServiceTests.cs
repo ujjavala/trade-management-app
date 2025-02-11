@@ -8,10 +8,11 @@ namespace TradeManagementApp.Tests.Services
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Moq;
-    using TradeManagementApp.API.Services;
-    using TradeManagementApp.Models;
-    using TradeManagementApp.Persistence.Repositories;
+    using TradeManagementApp.Application.Services;
+    using TradeManagementApp.Domain.Models;
+    using TradeManagementApp.Domain.Repositories;
     using Xunit;
+
 
     public class AccountServiceTests
     {

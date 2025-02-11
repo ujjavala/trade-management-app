@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TradeManagementApp.Models\TradeManagementApp.Models.csproj" />
+    <ProjectReference Include="..\TradeManagementApp.Domain\TradeManagementApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>

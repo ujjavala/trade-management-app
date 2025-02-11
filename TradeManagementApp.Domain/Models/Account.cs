@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace TradeManagementApp.Models
+namespace TradeManagementApp.Domain.Models
 {
     public class Account
     {

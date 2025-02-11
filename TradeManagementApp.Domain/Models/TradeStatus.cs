@@ -1,4 +1,4 @@
-namespace TradeManagementApp.Models
+namespace TradeManagementApp.Domain.Models
 {
     public enum TradeStatus
     {

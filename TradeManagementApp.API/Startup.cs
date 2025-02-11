@@ -1,3 +1,7 @@
+// <copyright file="Startup.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace TradeManagementApp.API
 {
     using System;
@@ -11,9 +15,11 @@ namespace TradeManagementApp.API
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.OpenApi.Models;
-    using TradeManagementApp.API.Services;
+    using TradeManagementApp.Application.Services;
+    using TradeManagementApp.Domain.Repositories;
     using TradeManagementApp.Persistence;
     using TradeManagementApp.Persistence.Repositories;
+
 
     public class Startup
     {

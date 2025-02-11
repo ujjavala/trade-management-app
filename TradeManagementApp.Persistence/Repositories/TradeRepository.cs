@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TradeManagementApp.Models;
+using TradeManagementApp.Domain.Models;
+using TradeManagementApp.Domain.Repositories;
 
 namespace TradeManagementApp.Persistence.Repositories
 {

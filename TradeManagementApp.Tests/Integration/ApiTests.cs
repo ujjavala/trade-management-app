@@ -1,12 +1,17 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+// <copyright file="ApiTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace TradeManagementApp.Tests.Integration
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc.Testing;
+    using Xunit;
+
+
     public class ApiTests : IClassFixture<CustomWebApplicationFactory<TradeManagementApp.API.Startup>>
     {
         private readonly CustomWebApplicationFactory<TradeManagementApp.API.Startup> _factory;

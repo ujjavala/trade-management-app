@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TradeManagementApp.Models;
+using TradeManagementApp.Domain.Models;
 
-namespace TradeManagementApp.Persistence.Repositories
+namespace TradeManagementApp.Domain.Repositories
 {
     public interface IAccountRepository
     {

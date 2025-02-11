@@ -22,7 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TradeManagementApp.API\TradeManagementApp.API.csproj" />
     <ProjectReference Include="..\TradeManagementApp.Persistence\TradeManagementApp.Persistence.csproj" />
-    <ProjectReference Include="..\TradeManagementApp.Models\TradeManagementApp.Models.csproj" />
+    <ProjectReference Include="..\TradeManagementApp.Domain.Models\TradeManagementApp.Domain.Models.csproj" />
   </ItemGroup>
 
 </Project>

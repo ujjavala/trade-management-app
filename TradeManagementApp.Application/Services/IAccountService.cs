@@ -2,12 +2,12 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace TradeManagementApp.API.Services
-{
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using TradeManagementApp.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TradeManagementApp.Domain.Models;
 
+namespace TradeManagementApp.Application.Services
+{
     public interface IAccountService
     {
         Task<IEnumerable<Account>> GetAllAccountsAsync();

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TradeManagementApp.Models;
+using TradeManagementApp.Domain.Models;
 using System;
 
 namespace TradeManagementApp.Persistence

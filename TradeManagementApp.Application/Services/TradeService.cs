@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TradeManagementApp.Models;
-using TradeManagementApp.Persistence.Repositories;
+using TradeManagementApp.Domain.Models;
+using TradeManagementApp.Domain.Repositories;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 
-namespace TradeManagementApp.API.Services
+namespace TradeManagementApp.Application.Services
 {
     public class TradeService : ITradeService
     {
