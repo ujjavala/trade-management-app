@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore; // Add this for .ToListAsync()
+using System;
 using System.Collections.Generic;
+using System.Linq; // Add this for LINQ
 using System.Threading.Tasks;
 using TradeManagementApp.Application.Services;
 using TradeManagementApp.Domain.Models;
@@ -36,6 +39,41 @@ namespace TradeManagementApp.API.Controllers
             }
 
             return Ok(account);
+        }
+
+        // GET: api/Accounts/Search?id=123&lastName=Doe
+        [HttpGet("Search")]
+        public async Task<ActionResult<IEnumerable<Account>>> SearchAccounts(int? id, string? lastName)
+        {
+            if (id == null && string.IsNullOrEmpty(lastName))
+            {
+                return BadRequest("At least one search parameter (id or lastName) must be provided.");
+            }
+
+            // Validate lastName to prevent SQL injection
+            if (!string.IsNullOrEmpty(lastName) && lastName.Length > 50) // Example max length
+            {
+                return BadRequest("Last name is too long.");
+            }
+
+            var accounts = await _accountService.GetAllAccountsAsync(); // Get all accounts
+
+            if (id.HasValue)
+            {
+                accounts = accounts.Where(a => a.Id == id.Value);
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                accounts = accounts.Where(a => a.LastName.Contains(lastName, StringComparison.OrdinalIgnoreCase)); // Case-insensitive search
+            }
+
+            if (accounts == null || !accounts.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(accounts);
         }
 
         // PUT: api/Accounts/5

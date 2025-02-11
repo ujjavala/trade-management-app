@@ -30,6 +30,6 @@ namespace TradeManagementApp.Domain.Models
 
         // Navigation property
         [JsonIgnore]
-        public Account Account { get; set; }
+        public Account? Account { get; set; }
     }
 }

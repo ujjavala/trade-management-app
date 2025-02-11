@@ -15,6 +15,6 @@ namespace TradeManagementApp.Domain.Models
         public string LastName { get; set; }
 
         [JsonIgnore]
-        public ICollection<Trade> Trades { get; set; }
+        public ICollection<Trade>? Trades { get; set; }
     }
 }
