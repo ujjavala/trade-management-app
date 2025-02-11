@@ -211,6 +211,64 @@ The TradeManagementApp application follows a layered architecture, where each la
 
 This orchestration ensures a clean separation of concerns and makes the application easy to maintain and extend.
 
+### Caching Implementation
+
+To improve performance, the application implements a caching mechanism for retrieving account data. The `AccountService` utilizes `IMemoryCache` from `Microsoft.Extensions.Caching.Memory` to cache account information.
+
+#### Caching Strategy
+
+The caching strategy involves the following steps:
+
+1.  **Check the Cache:** When retrieving an account by ID, the `AccountService` first checks if the account exists in the cache using a cache key (e.g., `"account-{accountId}"`).
+2.  **Return Cached Data (if available):** If the account is found in the cache, it is returned directly, bypassing the database query.
+3.  **Retrieve from Database (if not in cache):** If the account is not found in the cache, the `AccountService` retrieves it from the database using the `AccountRepository`.
+4.  **Add to Cache:** After retrieving the account from the database, the `AccountService` adds it to the cache with an appropriate cache key and expiration time. This ensures that subsequent requests for the same account can be served from the cache.
+
+#### Code Snippet
+
+```csharp
+public async Task<Account> GetAccountByIdWithCacheAsync(int accountId)
+{
+    string cacheKey = $"account-{accountId}";
+
+    if (_memoryCache.TryGetValue(cacheKey, out Account account))
+    {
+        return account; // Return cached account
+    }
+
+    account = await _accountRepository.GetAccountByIdAsync(accountId);
+
+    if (account != null)
+    {
+        _memoryCache.Set(cacheKey, account, TimeSpan.FromMinutes(10)); // Cache for 10 minutes
+    }
+
+    return account;
+}
+```
+
+#### Benefits of Caching
+
+-   **Reduced Database Load:** Caching reduces the number of database queries, which can significantly improve performance, especially for frequently accessed data.
+-   **Improved Response Times:** Serving data from the cache is much faster than retrieving it from the database, resulting in faster response times for API requests.
+-   **Scalability:** Caching can help improve the scalability of the application by reducing the load on the database server.
+
+### Docker Configuration
+
+The application is configured to run in a Docker container. The `Dockerfile` includes the following configurations:
+
+-   **Base Image**: Uses the official .NET SDK and ASP.NET runtime images.
+-   **Copying Source Code**: Copies the source code into the container.
+-   **Restoring Dependencies**: Restores the project dependencies using `dotnet restore`.
+-   **Building the Application**: Builds the application using `dotnet build`.
+-   **Publishing the Application**: Publishes the application using `dotnet publish`.
+-   **Setting Environment Variables**: Sets the `ASPNETCORE_URLS` environment variable to configure the application to listen on all network interfaces.
+-   **Copying the SQLite Database**: Copies the SQLite database file into the container.
+-   **Setting the Connection String**: Configures the connection string using the `ConnectionStrings__DefaultConnection` environment variable.
+-   **Entry Point**: Specifies the entry point for the application using `dotnet TradeManagementApp.API.dll`.
+
+The `docker-compose.yml` file defines the services, networks, and volumes used by the application.
+
 ### Additional Information
 
 -   Ensure that you have the correct version of the .NET SDK installed.
@@ -222,5 +280,3 @@ The following tasks are still pending:
 - Fix Integration Tests: The integration tests need to be reviewed and fixed to ensure they are working correctly with the new architecture.
 
 - Add Authentication Layer: Implement an authentication layer to secure the API endpoints.
-
-- Add Caching: Implement caching to improve the performance of the API.
