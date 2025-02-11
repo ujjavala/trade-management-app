@@ -215,16 +215,16 @@ This orchestration ensures a clean separation of concerns and makes the applicat
 
 ### Caching Implementation
 
-To improve performance, the application implements a caching mechanism for retrieving account data. The `AccountService` utilizes `IMemoryCache` from `Microsoft.Extensions.Caching.Memory` to cache account information.
+To improve performance, the application implements a caching mechanism for retrieving account data. The `AccountService` utilizes an LRU (Least Recently Used) cache to cache account information.
 
 #### Caching Strategy
 
 The caching strategy involves the following steps:
 
-1.  **Check the Cache:** When retrieving an account by ID, the `AccountService` first checks if the account exists in the cache using a cache key (e.g., `"account-{accountId}"`).
+1.  **Check the Cache:** When retrieving an account by ID, the `AccountService` first checks if the account exists in the LRU cache using a cache key (e.g., `"account-{accountId}"`).
 2.  **Return Cached Data (if available):** If the account is found in the cache, it is returned directly, bypassing the database query.
 3.  **Retrieve from Database (if not in cache):** If the account is not found in the cache, the `AccountService` retrieves it from the database using the `AccountRepository`.
-4.  **Add to Cache:** After retrieving the account from the database, the `AccountService` adds it to the cache with an appropriate cache key and expiration time. This ensures that subsequent requests for the same account can be served from the cache.
+4.  **Add to Cache:** After retrieving the account from the database, the `AccountService` adds it to the cache with an appropriate cache key. The LRU cache ensures that the least recently used items are evicted when the cache reaches its capacity.
 
 #### Code Snippet
 
@@ -233,7 +233,7 @@ public async Task<Account> GetAccountByIdWithCacheAsync(int accountId)
 {
     string cacheKey = $"account-{accountId}";
 
-    if (_memoryCache.TryGetValue(cacheKey, out Account account))
+    if (_lruCache.TryGetValue(cacheKey, out Account account))
     {
         return account; // Return cached account
     }
@@ -242,7 +242,7 @@ public async Task<Account> GetAccountByIdWithCacheAsync(int accountId)
 
     if (account != null)
     {
-        _memoryCache.Set(cacheKey, account, TimeSpan.FromMinutes(10)); // Cache for 10 minutes
+        _lruCache.Set(cacheKey, account); // Add to LRU cache
     }
 
     return account;
