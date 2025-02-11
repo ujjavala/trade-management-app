@@ -1,9 +1,10 @@
-using TradeManagementApp.Domain.Models;
-using Microsoft.Extensions.Caching.Memory;
-using TradeManagementApp.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TradeManagementApp.Domain.Models;
+using TradeManagementApp.Domain.Repositories;
+using Microsoft.Extensions.Caching.Memory; // Add this using directive
+
 
 namespace TradeManagementApp.Application.Services
 {
@@ -28,16 +29,35 @@ namespace TradeManagementApp.Application.Services
             return await _accountRepository.GetAccountByIdAsync(id);
         }
 
-        public async Task AddAccountAsync(Account account)
+        public async Task<Account> GetAccountByIdWithCacheAsync(int accountId)
         {
-            if (string.IsNullOrEmpty(account.FirstName))
+            string cacheKey = $"account-{accountId}";
+
+            if (_memoryCache.TryGetValue(cacheKey, out Account account))
             {
-                throw new ArgumentException("FirstName is required.");
+                return account; // Return cached account
             }
 
-            if (string.IsNullOrEmpty(account.LastName))
+            account = await _accountRepository.GetAccountByIdAsync(accountId);
+
+            if (account != null)
             {
-                throw new ArgumentException("LastName is required.");
+                _memoryCache.Set(cacheKey, account, TimeSpan.FromMinutes(10)); // Cache for 10 minutes
+            }
+
+            return account;
+        }
+
+        public async Task AddAccountAsync(Account account)
+        {
+            if (string.IsNullOrWhiteSpace(account.FirstName))
+            {
+                throw new ArgumentException("First Name is required", nameof(account.FirstName));
+            }
+
+            if (string.IsNullOrWhiteSpace(account.LastName))
+            {
+                throw new ArgumentException("Last Name is required", nameof(account.LastName));
             }
 
             await _accountRepository.AddAccountAsync(account);
@@ -53,30 +73,9 @@ namespace TradeManagementApp.Application.Services
             await _accountRepository.DeleteAccountAsync(id);
         }
 
-        public async Task<Account> GetAccountByIdWithCacheAsync(int id)
+        public async Task<IEnumerable<Account>> SearchAccountsAsync(int? id, string? lastName)
         {
-            string cacheKey = $"account-{id}";
-
-            // Try to get the account from the cache
-            if (!_memoryCache.TryGetValue(cacheKey, out Account account))
-            {
-                // If not found in cache, fetch from the repository
-                account = await _accountRepository.GetAccountByIdAsync(id);
-
-                if (account != null)
-                {
-                    // Set cache options
-                    var cacheEntryOptions = new MemoryCacheEntryOptions()
-                        .SetSlidingExpiration(TimeSpan.FromSeconds(30)) // Expire if not accessed for 30 seconds
-                        .SetAbsoluteExpiration(TimeSpan.FromSeconds(300)) // Expire after 5 minutes
-                        .SetPriority(CacheItemPriority.Normal); // Keep in cache if memory is low
-
-                    // Save to cache
-                    _memoryCache.Set(cacheKey, account, cacheEntryOptions);
-                }
-            }
-
-            return account;
+            return await _accountRepository.SearchAccountsAsync(id, lastName);
         }
     }
 }

@@ -11,5 +11,6 @@ namespace TradeManagementApp.Domain.Repositories
         Task AddAccountAsync(Account account);
         Task UpdateAccountAsync(Account account);
         Task DeleteAccountAsync(int id);
+        Task<IEnumerable<Account>> SearchAccountsAsync(int? id, string? lastName); // Add this line
     }
 }

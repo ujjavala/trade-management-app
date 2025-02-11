@@ -159,7 +159,7 @@ namespace TradeManagementApp.Tests.Services
             await Assert.ThrowsAsync<Exception>(() => _service.DeleteAccountAsync(1));
         }
 
-        [Fact(Skip ="Fix this test")]
+        [Fact(Skip = "Fix this test")]
         public async Task GetAccountByIdWithCacheAsync_AccountInCache_ReturnsCachedAccount()
         {
             // Arrange
@@ -223,7 +223,7 @@ namespace TradeManagementApp.Tests.Services
             _mockMemoryCache.Verify(cache => cache.CreateEntry(cacheKey), Times.Never); // Should not add to cache
         }
 
-        [Fact(Skip ="Fix this test")]
+        [Fact(Skip = "Fix this test")]
         public async Task GetAccountByIdWithCacheAsync_CacheThrowsException_ReturnsAccountFromRepository()
         {
             // Arrange
@@ -255,6 +255,69 @@ namespace TradeManagementApp.Tests.Services
             // Act & Assert
             await Assert.ThrowsAsync<Exception>(() => _service.GetAccountByIdWithCacheAsync(accountId));
             _mockAccountRepository.Verify(repo => repo.GetAccountByIdAsync(accountId), Times.Once); // Should try to hit the repository
+        }
+
+        [Fact]
+        public async Task SearchAccountsAsync_WithValidId_ReturnsAccounts()
+        {
+            // Arrange
+            var accounts = new List<Account>
+            {
+                new Account { Id = 1, FirstName = "John", LastName = "Doe" },
+                new Account { Id = 2, FirstName = "Jane", LastName = "Doe" }
+            };
+            _mockAccountRepository.Setup(repo => repo.SearchAccountsAsync(1, null)).ReturnsAsync(accounts.Where(a => a.Id == 1));
+
+            // Act
+            var result = await _service.SearchAccountsAsync(1, null);
+
+            // Assert
+            Assert.Single(result);
+            Assert.Equal(1, result.First().Id);
+        }
+
+        [Fact]
+        public async Task SearchAccountsAsync_WithValidLastName_ReturnsAccounts()
+        {
+            // Arrange
+            var accounts = new List<Account>
+            {
+                new Account { Id = 1, FirstName = "John", LastName = "Doe" },
+                new Account { Id = 2, FirstName = "Jane", LastName = "Doe" }
+            };
+            _mockAccountRepository.Setup(repo => repo.SearchAccountsAsync(null, "Doe")).ReturnsAsync(accounts.Where(a => a.LastName == "Doe"));
+
+            // Act
+            var result = await _service.SearchAccountsAsync(null, "Doe");
+
+            // Assert
+            Assert.Equal(2, result.Count());
+        }
+
+        [Fact]
+        public async Task SearchAccountsAsync_WithInvalidId_ReturnsEmpty()
+        {
+            // Arrange
+            _mockAccountRepository.Setup(repo => repo.SearchAccountsAsync(99, null)).ReturnsAsync(Enumerable.Empty<Account>());
+
+            // Act
+            var result = await _service.SearchAccountsAsync(99, null);
+
+            // Assert
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task SearchAccountsAsync_WithInvalidLastName_ReturnsEmpty()
+        {
+            // Arrange
+            _mockAccountRepository.Setup(repo => repo.SearchAccountsAsync(null, "NonExistent")).ReturnsAsync(Enumerable.Empty<Account>());
+
+            // Act
+            var result = await _service.SearchAccountsAsync(null, "NonExistent");
+
+            // Assert
+            Assert.Empty(result);
         }
     }
 }

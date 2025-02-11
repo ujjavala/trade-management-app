@@ -56,17 +56,7 @@ namespace TradeManagementApp.API.Controllers
                 return BadRequest("Last name is too long.");
             }
 
-            var accounts = await _accountService.GetAllAccountsAsync(); // Get all accounts
-
-            if (id.HasValue)
-            {
-                accounts = accounts.Where(a => a.Id == id.Value);
-            }
-
-            if (!string.IsNullOrEmpty(lastName))
-            {
-                accounts = accounts.Where(a => a.LastName.Contains(lastName, StringComparison.OrdinalIgnoreCase)); // Case-insensitive search
-            }
+            var accounts = await _accountService.SearchAccountsAsync(id, lastName);
 
             if (accounts == null || !accounts.Any())
             {

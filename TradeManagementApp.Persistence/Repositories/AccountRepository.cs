@@ -1,13 +1,13 @@
-// filepath: /Users/ujja/code/api-design-assignment/TradeManagementApp/TradeManagementApp.Persistence/Repositories/AccountRepository.cs
-using TradeManagementApp.Domain.Models;
-using TradeManagementApp.Domain.Repositories; // Add this using statement
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using TradeManagementApp.Domain.Models;
+using TradeManagementApp.Domain.Repositories;
 
 namespace TradeManagementApp.Persistence.Repositories
 {
-    public class AccountRepository : IAccountRepository // Implement the interface
+    public class AccountRepository : IAccountRepository
     {
         private readonly DataContext _context;
 
@@ -41,8 +41,29 @@ namespace TradeManagementApp.Persistence.Repositories
         public async Task DeleteAccountAsync(int id)
         {
             var account = await _context.Accounts.FindAsync(id);
-            _context.Accounts.Remove(account);
-            await _context.SaveChangesAsync();
+            if (account != null)
+            {
+                _context.Accounts.Remove(account);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<IEnumerable<Account>> SearchAccountsAsync(int? id, string? lastName)
+        {
+            IQueryable<Account> query = _context.Accounts;
+
+            if (id.HasValue)
+            {
+                query = query.Where(a => a.Id == id.Value);
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                // Use EF.Functions.Like with parameterization
+                query = query.Where(a => EF.Functions.Like(a.LastName.ToLower(), $"%{lastName.ToLower()}%"));
+            }
+
+            return await query.ToListAsync();
         }
     }
 }

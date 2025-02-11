@@ -12,5 +12,8 @@ namespace TradeManagementApp.Application.Services
         Task UpdateAccountAsync(Account account);
         Task DeleteAccountAsync(int id);
         Task<Account> GetAccountByIdWithCacheAsync(int id); // New method
+        Task<IEnumerable<Account>> SearchAccountsAsync(int? id, string? lastName); // Add this line
+
+
     }
 }
