@@ -276,6 +276,37 @@ The `docker-compose.yml` file defines the services, networks, and volumes used b
 -   Ensure that you have the correct version of the .NET SDK installed.
 -   If you encounter any issues, please check the error messages and ensure that all dependencies are correctly installed.
 
+### Architecture Decision Records (ADRs)
+
+The following ADRs document the architectural decisions made for this project:
+
+1. **[ADR 001: Use of Layered Architecture](adrs/001-use-of-layered-architecture.md)**
+    - Decision to use a layered architecture to promote separation of concerns, testability, and maintainability.
+2. **[ADR 002: Use of Entity Framework Core](adrs/002-use-of-entity-framework-core.md)**
+    - Decision to use Entity Framework Core for data access in the Persistence Layer.
+3. **[ADR 003: Use of In-Memory Caching with LRU Strategy](adrs/003-use-of-in-memory-caching-with-lru-strategy.md)**
+    - Decision to use in-memory caching with an LRU strategy for caching account data.
+4. **[ADR 004: Use of Docker for Containerization](adrs/004-use-of-docker-for-containerization.md)**
+    - Decision to use Docker for containerizing the application and its dependencies.
+5. **[ADR 005: Use of Swagger for API Documentation](adrs/005-use-of-swagger-for-api-documentation.md)**
+    - Decision to use Swagger for API documentation.
+6. **[ADR 006: Use of xUnit for Unit Testing](adrs/006-use-of-xunit-for-unit-testing.md)**
+    - Decision to use xUnit for unit testing.
+7. **[ADR 007: Use of Moq for Mocking Dependencies](adrs/007-use-of-moq-for-mocking-dependencies.md)**
+    - Decision to use Moq for mocking dependencies in unit tests.
+8. **[ADR 008: Use of SQLite for Development and Testing](adrs/008-use-of-sqlite-for-development-and-testing.md)**
+    - Decision to use SQLite as the database for development and testing environments.
+9. **[ADR 009: Use of Redis for Distributed Caching](adrs/009-use-of-redis-for-distributed-caching.md)**
+    - Decision to use Redis for distributed caching in the production environment.
+10. **[ADR 010: Implement Authentication Layer](adrs/010-implement-authentication-layer.md)**
+    - Decision to implement an authentication layer to secure the API endpoints.
+11. **[ADR 011: Implement ORM for Handling Complex DTO Models](adrs/011-implement-orm-for-handling-complex-dto-models.md)**
+    - Decision to implement an ORM using Entity Framework Core to handle complex DTO models.
+12. **[ADR 012: Fix Integration Tests](adrs/012-fix-integration-tests.md)**
+    - Decision to review and fix the integration tests to ensure they work correctly with the new architecture.
+13. **[ADR 013: Use of LRU Cache for In-Memory Caching](adrs/013-use-of-lru-cache-for-in-memory-caching.md)**
+    - Decision to use in-memory caching with an LRU strategy for caching account data.
+
 ### TODO
 
 The following tasks are still pending:
